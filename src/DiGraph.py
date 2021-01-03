@@ -1,5 +1,5 @@
-from src import GraphInterface
-from src import NodeData
+from src.GraphInterface import GraphInterface
+from src.NodeData import NodeData
 
 
 class DiGraph(GraphInterface):
@@ -80,6 +80,7 @@ class DiGraph(GraphInterface):
             else:
                 self.mc += 1
                 self.edges[(id1, id2)] = weight
+                return True
         else:
             return False
 
@@ -109,8 +110,7 @@ class DiGraph(GraphInterface):
         """
         if node_id not in self.nodes:
             return False
-
-        for key in self.edges:
+        for key in list(self.edges.keys()):
             # delete all the edges the node is connected to
             if node_id in key:
                 del self.edges[key]

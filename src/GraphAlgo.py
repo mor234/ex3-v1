@@ -1,3 +1,5 @@
+from typing import List
+
 from DiGraph import DiGraph
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.GraphInterface import GraphInterface
@@ -30,7 +32,19 @@ class GraphAlgo(GraphAlgoInterface):
         """
         raise NotImplementedError
 
+    def init_is_part_of_scc(self):
+        """
+
+          :return:
+        """
+        for node in self.graph.nodes.values():
+            node.is_part_of_scc = False;
+
     def init_tag_visited(self):
+        """
+
+        :return:
+        """
         for node in self.graph.nodes.values():
             node.tag = float('inf')
             node.visited = False
@@ -64,11 +78,13 @@ class GraphAlgo(GraphAlgoInterface):
 
         ans_dist = float('inf')
         ans_path = []
+        if self.graph is None:
+            return ans_dist, ans_path  # if the graph is None
         if self.graph.v_size() == 0:
-            return (ans_dist, ans_path)  # if the graph is empty
+            return ans_dist, ans_path  # if the graph is empty
 
         if id1 not in self.graph.nodes or id2 not in self.graph.nodes:
-            return (ans_dist, ans_path)  # if the src node or dest node not in the graph
+            return ans_dist, ans_path  # if the src node or dest node not in the graph
 
         self.init_tag_visited()  # initialize all the nodes tags to float('inf'), visited- to false
         distance_queue = [(node.tag, node) for node in self.graph.nodes]
@@ -102,7 +118,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         # if there is no path to id2 from id1
         if ans_dist == float("inf"):
-            return (ans_dist, ans_path)
+            return ans_dist, ans_path
 
         # find the path
         curr_node = self.graph.nodes.get(id2)
@@ -119,7 +135,7 @@ class GraphAlgo(GraphAlgoInterface):
 
             ans_path.insert(0, curr_node.id)
 
-        return (ans_dist, ans_path)
+        return ans_dist, ans_path
 
     def connected_component(self, id1: int) -> list:
         """
@@ -130,7 +146,59 @@ class GraphAlgo(GraphAlgoInterface):
         Notes:
         If the graph is None or id1 is not in the graph, the function should return an empty list []
         """
-        raise NotImplementedError
+        if self.graph is None:
+            return []
+        if id1 not in self.graph.nodes:
+            return []
+
+        self.init_tag_visited()
+
+        curr_node = self.graph.nodes[id1]
+        curr_node.tag = curr_node.id
+
+        stack = []
+        neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
+        """
+
+
+        """
+        while True:
+            for node in neighbors_list:
+                if not node.visited:  # if the node still hasn't reached ll his neighbors
+                    if node.tag is float("inf"):  # if not this is the first time arriving to the node
+                        node.tag = curr_node.id  # sign which node it came from.
+                        curr_node = node
+                        neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
+
+            # don't have any neighbors one got to.
+            stack.append(curr_node)
+            curr_node.visited = True
+            if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                break
+            curr_node = self.graph.nodes[curr_node.tag]  # go back
+
+            self.init_tag_visited()
+            curr_node = stack[-1]
+            curr_node.tag = curr_node.id
+
+        strongly_component = [curr_node]
+
+        while True:
+            neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
+            for node in neighbors_list:
+                if not node.visited:  # if the node still hasn't reached ll his neighbors
+                    if node.tag is float("inf"):  # if not this is the first time arriving to the node
+                        node.tag = curr_node.id  # sign which node it came from.
+                        curr_node = node
+                        strongly_component.append(curr_node)
+                        curr_node.is_part_of_scc = True
+                        neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
+
+            # don't have any neighbors one got to.
+            curr_node.visited = True
+            if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                return strongly_component
+            curr_node = self.graph.nodes[curr_node.tag]  # go back
 
     def connected_components(self) -> List[list]:
         """
@@ -140,7 +208,15 @@ class GraphAlgo(GraphAlgoInterface):
         Notes:
         If the graph is None the function should return an empty list []
         """
-        raise NotImplementedError
+        if self.graph is None:
+            return []
+        self.init_is_part_of_scc()
+        list_of_scc = []
+        for node_key,node in self.graph.nodes:
+            if not node.is_part_of_scc:
+                list_of_scc.append(self.connected_component(node_key))
+
+        return list_of_scc # what is List???
 
     def plot_graph(self) -> None:
         """
