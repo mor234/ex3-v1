@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 from DiGraph import DiGraph
@@ -22,7 +23,25 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the json file
         @returns True if the loading was successful, False o.w.
         """
-        raise NotImplementedError
+        try:
+            with open(file_name) as fs:
+                j = json.load(fs)
+                graph = DiGraph()
+            for node in j['Nodes']:
+                if pos in node:
+                    pos = node['pos']
+                    graph.add_node(id, pos)
+                else:
+                    graph.add_node(id, None)
+
+            for edge in j['Edges']:
+                graph.add_edge(edge['s'], edge['d'], edge['w'])
+            self.graph = graph
+            fs.close()
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
     def save_to_json(self, file_name: str) -> bool:
         """
@@ -30,11 +49,12 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
         """
-        raise NotImplementedError
+
+
+
 
     def init_is_part_of_scc(self):
         """
-
           :return:
         """
         for node in self.graph.nodes.values():
@@ -42,7 +62,6 @@ class GraphAlgo(GraphAlgoInterface):
 
     def init_tag_visited(self):
         """
-
         :return:
         """
         for node in self.graph.nodes.values():
@@ -55,8 +74,6 @@ class GraphAlgo(GraphAlgoInterface):
         @param id1: The start node id
         @param id2: The end node id
         @return: The distance of the path, a list of the nodes ids that the path goes through
-
-
         Example:
 #      >>> from GraphAlgo import GraphAlgo
 #       >>> g_algo = GraphAlgo()
@@ -69,7 +86,6 @@ class GraphAlgo(GraphAlgoInterface):
 #        (1, [0, 1])
 #        >>> g_algo.shortestPath(0,2)
 #        (5, [0, 1, 2])
-
         Notes:
         If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
         More info:
@@ -142,7 +158,6 @@ class GraphAlgo(GraphAlgoInterface):
         Finds the Strongly Connected Component(SCC) that node id1 is a part of.
         @param id1: The node id
         @return: The list of nodes in the SCC
-
         Notes:
         If the graph is None or id1 is not in the graph, the function should return an empty list []
         """
@@ -159,8 +174,6 @@ class GraphAlgo(GraphAlgoInterface):
         stack = []
         neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
         """
-
-
         """
         while True:
             for node in neighbors_list:
@@ -204,7 +217,6 @@ class GraphAlgo(GraphAlgoInterface):
         """
         Finds all the Strongly Connected Component(SCC) in the graph.
         @return: The list all SCC
-
         Notes:
         If the graph is None the function should return an empty list []
         """
@@ -212,11 +224,11 @@ class GraphAlgo(GraphAlgoInterface):
             return []
         self.init_is_part_of_scc()
         list_of_scc = []
-        for node_key,node in self.graph.nodes:
+        for node_key, node in self.graph.nodes:
             if not node.is_part_of_scc:
                 list_of_scc.append(self.connected_component(node_key))
 
-        return list_of_scc # what is List???
+        return list_of_scc  # what is List???
 
     def plot_graph(self) -> None:
         """
