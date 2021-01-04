@@ -1,0 +1,123 @@
+{
+    "0": {
+        "id": 0,
+        "pos": [
+            "35.18753053591606",
+            "32.10378225882353",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "1": {
+        "id": 1,
+        "pos": [
+            "35.18958953510896",
+            "32.10785303529412",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "2": {
+        "id": 2,
+        "pos": [
+            "35.19341035835351",
+            "32.10610841680672",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "3": {
+        "id": 3,
+        "pos": [
+            "35.197528356739305",
+            "32.1053088",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "4": {
+        "id": 4,
+        "pos": [
+            "35.2016888087167",
+            "32.10601755126051",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "5": {
+        "id": 5,
+        "pos": [
+            "35.20582803389831",
+            "32.10625380168067",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "6": {
+        "id": 6,
+        "pos": [
+            "35.20792948668281",
+            "32.10470908739496",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "7": {
+        "id": 7,
+        "pos": [
+            "35.20746249717514",
+            "32.10254648739496",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "8": {
+        "id": 8,
+        "pos": [
+            "35.20319591121872",
+            "32.1031462",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "9": {
+        "id": 9,
+        "pos": [
+            "35.19597880064568",
+            "32.10154696638656",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    },
+    "10": {
+        "id": 10,
+        "pos": [
+            "35.18910131880549",
+            "32.103618700840336",
+            "0.0"
+        ],
+        "visited": false,
+        "is_part_of_scc": false,
+        "tag": Infinity
+    }
+}

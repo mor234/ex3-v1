@@ -1,5 +1,9 @@
 import json
 from typing import List
+# import networkx as nx
+from numpy import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 from DiGraph import DiGraph
 from src.GraphAlgoInterface import GraphAlgoInterface
@@ -24,22 +28,25 @@ class GraphAlgo(GraphAlgoInterface):
         @returns True if the loading was successful, False o.w.
         """
         try:
-            with open(file_name) as fs:
+            with open(file_name,'r') as fs:  # excepton hendel
                 j = json.load(fs)
-                graph = DiGraph()
+                fs.close()
+            # print (j)
+            g = DiGraph()
             for node in j['Nodes']:
-                if pos in node:
-                    pos = node['pos']
-                    graph.add_node(id, pos)
-                else:
-                    graph.add_node(id, None)
+                print(node)
+                pos = None
+                if 'pos' in node:
+                    pos=node['pos'].split(',')
+                    g.add_node(node['id'], pos)
 
             for edge in j['Edges']:
-                graph.add_edge(edge['s'], edge['d'], edge['w'])
-            self.graph = graph
-            fs.close()
+                g.add_edge(edge['src'], edge['dest'], edge['w'])
+
+            self.graph = g
+            # print (g)
             return True
-        except Exception as e:
+        except IOError as e:
             print(e)
             return False
 
@@ -49,9 +56,32 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
         """
-
-
-
+        try:
+            print(self.graph.__dict__)
+            with open(file_name,'w') as f:  # excepton hendel
+                json.dump(self.graph.nodes,fp=f,default=lambda m: m.__dict__,indent=4)
+                # edges=[{id1,id2,weight} for (id1,id2),weight in  self.graph.edges.items()]
+                # print(edges)
+                # json.dump(edges,fp=f,indent=4)
+                f.close()
+            # print (j)
+            # g = DiGraph()
+            # for node in j['Nodes']:
+            #     print(node)
+            #     pos = None
+            #     if 'pos' in node:
+            #         pos=node['pos'].split(',')
+            #         g.add_node(node['id'], pos)
+            #
+            # for edge in j['Edges']:
+            #     g.add_edge(edge['src'], edge['dest'], edge['w'])
+            #
+            # self.graph = g
+            # print (g)
+            return True
+        except IOError as e:
+            print(e)
+            return False
 
     def init_is_part_of_scc(self):
         """
@@ -237,32 +267,84 @@ class GraphAlgo(GraphAlgoInterface):
         Otherwise, they will be placed in a random but elegant manner.
         @return: None
         """
-        import networkx as nx
-        import matplotlib.pyplot as plt
 
-        graph = nx.DiGraph()
-        graph.add_node("A")
-        graph.add_node("B")
-        graph.add_node("C")
-        graph.add_node("D")
-        graph.add_node("E")
-        graph.add_node("F")
-        graph.add_node("G")
-        graph.add_edge("A", "B")
-        graph.add_edge("B", "C")
-        graph.add_edge("C", "E")
-        graph.add_edge("C", "F")
-        graph.add_edge("D", "E")
-        graph.add_edge("F", "G")
+        # https://colab.research.google.com/github/makeabilitylab/signals/blob/master/Tutorials/IntroToMatplotlib.ipynb#scrollTo=DZBaqyORpHIS
 
-        print(graph.nodes())
-        print(graph.edges())
+        g = self.graph
+        nodes_keys = g.nodes.keys()
 
-        pos = nx.spring_layout(graph)
 
-        nx.draw_networkx_nodes(graph, pos)
-        nx.draw_networkx_labels(graph, pos)
-        nx.draw_networkx_edges(graph, pos, edge_color='r', arrows=True)
+        index_for_node = {}
+       # x = random.rand()
+        x_nodes=[random.rand()*10 for i in range(len(nodes_keys))]
+        y_nodes=[random.rand()*10 for i in range(len(nodes_keys))]
+        i=0
+        for key in nodes_keys:
+            index_for_node[key]=i
+            i+=1
 
+        plt.scatter(x_nodes, y_nodes, label="vertx", color='b',s=100)
+        #x_vals = [1, 2, 3, 4]
+        #y_vals = [1, 4, 9, 16]
+
+        plt.xlabel("x ax is ")
+        plt.ylabel("y ax is ")
+        plt.title("The title of the graph")
+
+        for (id1, id2), weight in g.edges.items():
+
+            #plt.arrow(1, 2, 3, 4, width=0.05)
+            index_src=index_for_node[id1]
+            index_dest=index_for_node[id2]
+
+            plt.arrow(x_nodes[index_src],y_nodes[index_src] ,x_nodes[index_dest]-x_nodes[index_src],y_nodes[index_dest]-y_nodes[index_src]
+                      ,width=0.03, head_width=0.03*6 ,length_includes_head=True,color='lightblue')
+            middel_point_x=abs(x_nodes[index_dest]-x_nodes[index_src]/2)
+            middel_point_y=abs(y_nodes[index_dest]-y_nodes[index_src]/2)
+            label = "{:.2f}".format(weight)
+
+            plt.annotate(label,  # this is the text
+                         xy=(middel_point_x, middel_point_y),  # this is the point to label
+                         # textcoords="offset points",  # how to position the text
+                         ha='center')  # horizontal alignment can be left, right or center
+
+        # Showing the graph
+        #plt.show()
+        plt.legend()
         plt.show()
-       
+
+        # x = np.arange(0, 10, 0.1)
+        # plt.figure(figsize=(20, 10))
+        # y = np.sin(x)
+        # plt.plot(x, y, "D-")
+        # plt.plot(x_vals, y_vals, "ro-")
+        # plt.show()
+        #
+        # x = [0.15, 0.3, 0.45, 0.6, 0.75]
+        # y = [2.56422, 3.77284, 3.52623, 3.51468, 3.02199]
+        # n = [58, 651, 393, 203, 123]
+        #
+        # fig, ax = plt.subplots()
+        # ax.scatter(x, y)
+        #
+        # for i, txt in enumerate(n):
+        #     ax.annotate(n[i], (x[i] + 0.005, y[i] + 0.005))
+        #     arrowprops=dict(arrowstyle="simple")
+        #
+        # plt.plot(x, y)
+        # plt.show()
+        #
+        # fig = plt.figure()
+        # ax = plt.axes(projection="3d")
+        #
+        # z_line = np.linspace(0, 15, 1000)
+        # x_line = np.cos(z_line)
+        # y_line = np.sin(z_line)
+        # ax.plot3D(x_line, y_line, z_line, 'gray')
+        #
+        # z_points = 15 * np.random.random(100)
+        # x_points = np.cos(z_points) + 0.1 * np.random.randn(100)
+        # y_points = np.sin(z_points) + 0.1 * np.random.randn(100)
+        # ax.scatter3D(x_points, y_points, z_points, c=z_points, cmap='hsv');
+        #
+        # plt.show()

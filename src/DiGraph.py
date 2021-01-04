@@ -40,7 +40,6 @@ class DiGraph(GraphInterface):
 
         return in_edges_of_node
 
-
     def all_out_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
@@ -133,3 +132,5 @@ class DiGraph(GraphInterface):
             del self.edges[(node_id1, node_id2)]
             return True
         return False  # if the edge doesn't exist
+
+

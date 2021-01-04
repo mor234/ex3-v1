@@ -1,8 +1,26 @@
 import unittest
 from DiGraph import DiGraph
+from GraphAlgo import GraphAlgo
 
 
 class TestDiGraph(unittest.TestCase):
+
+    def test_plot_graph(self):
+        ga = GraphAlgo()
+        self.assertTrue(ga.load_from_json("../data/A0"))
+        ga.plot_graph()
+
+    def test_load(self):
+        ga = GraphAlgo()
+        self.assertFalse(ga.load_from_json("../data/A7"))
+        self.assertTrue(ga.load_from_json("../data/A0"))
+        self.assertFalse(ga.load_from_json("../data/ss"))
+
+    def test_save(self):
+        ga = GraphAlgo()
+        self.assertTrue(ga.load_from_json("../data/A0"))
+        self.assertFalse(ga.save_to_json("../data/try1"))
+
     def test_init_(self):
         pass
 
@@ -70,7 +88,6 @@ class TestDiGraph(unittest.TestCase):
 
         self.assertEqual(len(edges_out_3), 0, "didn't get the right dictionary")
 
-
     def test_all_out_edges_of_node(self):
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
@@ -131,9 +148,9 @@ class TestDiGraph(unittest.TestCase):
         mc = g.get_mc()
         self.assertTrue(g.remove_node(1))
         self.assertFalse(1 in g.nodes, "didn't delete node 1")
-        self.assertFalse((1,2) in g.edges, "didn't delete edge ");
+        self.assertFalse((1, 2) in g.edges, "didn't delete edge ");
         self.assertFalse((2, 1) in g.edges, "didn't delete edge in the oposite direction.");
-        self.assertTrue(mc +4 <= g.get_mc(), "didn't update mc correctly");
+        self.assertTrue(mc + 4 <= g.get_mc(), "didn't update mc correctly");
 
     def test_remove_edge(self):
         """
