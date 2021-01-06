@@ -1,6 +1,7 @@
 import json
 from typing import List
 # import networkx as nx
+from matplotlib.axes import Axes
 from numpy import random
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,8 +13,8 @@ import heapq
 
 
 class GraphAlgo(GraphAlgoInterface):
-    def __init__(self):
-        self.graph = DiGraph()
+    def __init__(self, graph: DiGraph = None):
+        self.graph = graph
 
     def get_graph(self) -> GraphInterface:
         """
@@ -28,16 +29,14 @@ class GraphAlgo(GraphAlgoInterface):
         @returns True if the loading was successful, False o.w.
         """
         try:
-            with open(file_name,'r') as fs:  # excepton hendel
+            with open(file_name, 'r') as fs:  # excepton hendel
                 j = json.load(fs)
                 fs.close()
-            # print (j)
             g = DiGraph()
             for node in j['Nodes']:
-                print(node)
-                pos = None
                 if 'pos' in node:
-                    pos=node['pos'].split(',')
+                    pos = node['pos'].split(',')
+                    pos = (float(pos[0]), float(pos[1]), float(pos[2]))
                     g.add_node(node['id'], pos)
 
             for edge in j['Edges']:
@@ -46,7 +45,7 @@ class GraphAlgo(GraphAlgoInterface):
             self.graph = g
             # print (g)
             return True
-        except IOError as e:
+        except Exception as e:
             print(e)
             return False
 
@@ -56,28 +55,33 @@ class GraphAlgo(GraphAlgoInterface):
         @param file_name: The path to the out file
         @return: True if the save was successful, False o.w.
         """
+        # create organize dictionary to save
+
+        nodes_dict = []
+        edges = []
+        if self.graph is not None:
+            for node in self.graph.nodes.values():
+                single_node_dict = node.__dict__
+                del single_node_dict["visited"]
+                del single_node_dict["is_part_of_scc"]
+                del single_node_dict["tag"]
+                single_node_dict["pos"] = ','.join(single_node_dict["pos"])
+                nodes_dict.append(single_node_dict)
+
+            class Edge():
+                def __init__(self, src: int, dest: int, w: float):
+                    self.src = src
+                    self.dest = dest
+                    self.w = w
+
+            edges = [Edge(edge[0], edge[1], weight) for edge, weight in self.graph.edges.items()]
+            # end if
+        graph_to_save = {"Nodes": nodes_dict, "Edges": edges}
+
         try:
-            print(self.graph.__dict__)
-            with open(file_name,'w') as f:  # excepton hendel
-                json.dump(self.graph.nodes,fp=f,default=lambda m: m.__dict__,indent=4)
-                # edges=[{id1,id2,weight} for (id1,id2),weight in  self.graph.edges.items()]
-                # print(edges)
-                # json.dump(edges,fp=f,indent=4)
+            with open(file_name, 'w') as f:
+                json.dump(graph_to_save, default=lambda m: m.__dict__, fp=f, indent=4)
                 f.close()
-            # print (j)
-            # g = DiGraph()
-            # for node in j['Nodes']:
-            #     print(node)
-            #     pos = None
-            #     if 'pos' in node:
-            #         pos=node['pos'].split(',')
-            #         g.add_node(node['id'], pos)
-            #
-            # for edge in j['Edges']:
-            #     g.add_edge(edge['src'], edge['dest'], edge['w'])
-            #
-            # self.graph = g
-            # print (g)
             return True
         except IOError as e:
             print(e)
@@ -105,17 +109,17 @@ class GraphAlgo(GraphAlgoInterface):
         @param id2: The end node id
         @return: The distance of the path, a list of the nodes ids that the path goes through
         Example:
-#      >>> from GraphAlgo import GraphAlgo
-#       >>> g_algo = GraphAlgo()
-#        >>> g_algo.addNode(0)
-#        >>> g_algo.addNode(1)
-#        >>> g_algo.addNode(2)
-#        >>> g_algo.addEdge(0,1,1)
-#        >>> g_algo.addEdge(1,2,4)
-#        >>> g_algo.shortestPath(0,1)
-#        (1, [0, 1])
-#        >>> g_algo.shortestPath(0,2)
-#        (5, [0, 1, 2])
+    #      >>> from GraphAlgo import GraphAlgo
+    #       >>> g_algo = GraphAlgo()
+    #        >>> g_algo.addNode(0)
+    #        >>> g_algo.addNode(1)
+    #        >>> g_algo.addNode(2)
+    #        >>> g_algo.addEdge(0,1,1)
+    #        >>> g_algo.addEdge(1,2,4)
+    #        >>> g_algo.shortestPath(0,1)
+    #        (1, [0, 1])
+    #        >>> g_algo.shortestPath(0,2)
+    #        (5, [0, 1, 2])
         Notes:
         If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
         More info:
@@ -133,22 +137,26 @@ class GraphAlgo(GraphAlgoInterface):
             return ans_dist, ans_path  # if the src node or dest node not in the graph
 
         self.init_tag_visited()  # initialize all the nodes tags to float('inf'), visited- to false
-        distance_queue = [(node.tag, node) for node in self.graph.nodes]
-        heapq.heapify(distance_queue)
+
+        self.graph.nodes[id1].tag = 0
+        distance_queue = [(node.tag, node.id) for node in self.graph.nodes.values()]
+        distance_queue.sort()
+        print(distance_queue)
+        print(distance_queue[0])
 
         # find the dist using diextra algorithm
         while len(distance_queue) > 0:
-            tuple_tag_node = heapq.heappop(distance_queue)  # get the node with the shortest distance
-            curr_node = tuple_tag_node(1)
+            tag_id = distance_queue.pop()  # get the node with the shortest distance
+            curr_node = self.graph.nodes[tag_id[1]]
             curr_node.visited = True
-            curr_dist = tuple_tag_node(0)
+            curr_dist = tag_id[0]
             if curr_node.id == id2:
                 ans_dist = curr_dist  # maybe error, immutable
                 break;
 
             nodes_from = self.graph.all_out_edges_of_node(curr_node.id)
             for dest_node_key in nodes_from:
-                node = self.graph.nodes.get(dest_node_key)
+                node = self.graph.nodes[dest_node_key]
                 if not node.visited:
                     if curr_dist + nodes_from[dest_node_key] < node.tag:
                         # update tag
@@ -160,7 +168,7 @@ class GraphAlgo(GraphAlgoInterface):
             # while len(unvisited_queue):
             # heapq.heappop(unvisited_queue)
 
-            heapq.heapify(distance_queue)
+            distance_queue.sort()
 
         # if there is no path to id2 from id1
         if ans_dist == float("inf"):
@@ -271,45 +279,46 @@ class GraphAlgo(GraphAlgoInterface):
         # https://colab.research.google.com/github/makeabilitylab/signals/blob/master/Tutorials/IntroToMatplotlib.ipynb#scrollTo=DZBaqyORpHIS
 
         g = self.graph
-        nodes_keys = g.nodes.keys()
-
+        nodes = g.nodes
 
         index_for_node = {}
-       # x = random.rand()
-        x_nodes=[random.rand()*10 for i in range(len(nodes_keys))]
-        y_nodes=[random.rand()*10 for i in range(len(nodes_keys))]
-        i=0
-        for key in nodes_keys:
-            index_for_node[key]=i
-            i+=1
+        # x = random.rand()
+        x_nodes = []
+        y_nodes = []
+        i = 0
+        for node in nodes.values():
+            x_nodes.append(node.pos[0])
+            y_nodes.append(node.pos[1])
+            index_for_node[node.id] = i
+            i += 1
 
-        plt.scatter(x_nodes, y_nodes, label="vertx", color='b',s=100)
-        #x_vals = [1, 2, 3, 4]
-        #y_vals = [1, 4, 9, 16]
+        print(x_nodes)
+        plt.scatter(x_nodes, y_nodes, label="vertx", color='b', s=100)
 
         plt.xlabel("x ax is ")
         plt.ylabel("y ax is ")
         plt.title("The title of the graph")
 
         for (id1, id2), weight in g.edges.items():
+            index_src = index_for_node[id1]
+            index_dest = index_for_node[id2]
+            # plt.annotate('', xy=(x_nodes[index_src], y_nodes[index_src]), xycoords='data',
+            #              xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
+            #              arrowprops=dict(facecolor='black', arrowstyle='<-'))
+            plt.annotate('', xy=(x_nodes[index_src], y_nodes[index_src]), xycoords='data',
+                         xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
+                         arrowprops=dict(facecolor='black',width=0.1,headlength=8,headwidth=8))
+        """ middle_point_x = abs(x_nodes[index_dest] - x_nodes[index_src] / 2)
+         middle_point_y = abs(y_nodes[index_dest] - y_nodes[index_src] / 2)
+         label = "{:.2f}".format(weight)
 
-            #plt.arrow(1, 2, 3, 4, width=0.05)
-            index_src=index_for_node[id1]
-            index_dest=index_for_node[id2]
-
-            plt.arrow(x_nodes[index_src],y_nodes[index_src] ,x_nodes[index_dest]-x_nodes[index_src],y_nodes[index_dest]-y_nodes[index_src]
-                      ,width=0.03, head_width=0.03*6 ,length_includes_head=True,color='lightblue')
-            middel_point_x=abs(x_nodes[index_dest]-x_nodes[index_src]/2)
-            middel_point_y=abs(y_nodes[index_dest]-y_nodes[index_src]/2)
-            label = "{:.2f}".format(weight)
-
-            plt.annotate(label,  # this is the text
-                         xy=(middel_point_x, middel_point_y),  # this is the point to label
-                         # textcoords="offset points",  # how to position the text
-                         ha='center')  # horizontal alignment can be left, right or center
+         plt.annotate(label,  # this is the text
+                      xy=(middle_point_x, middle_point_y),  # this is the point to label
+                       textcoords="offset points",  # how to position the text
+                      ha='center')  # horizontal alignment can be left, right or center
+                 """
 
         # Showing the graph
-        #plt.show()
         plt.legend()
         plt.show()
 

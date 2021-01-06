@@ -1,25 +1,8 @@
 import unittest
 from DiGraph import DiGraph
-from GraphAlgo import GraphAlgo
 
 
 class TestDiGraph(unittest.TestCase):
-
-    def test_plot_graph(self):
-        ga = GraphAlgo()
-        self.assertTrue(ga.load_from_json("../data/A0"))
-        ga.plot_graph()
-
-    def test_load(self):
-        ga = GraphAlgo()
-        self.assertFalse(ga.load_from_json("../data/A7"))
-        self.assertTrue(ga.load_from_json("../data/A0"))
-        self.assertFalse(ga.load_from_json("../data/ss"))
-
-    def test_save(self):
-        ga = GraphAlgo()
-        self.assertTrue(ga.load_from_json("../data/A0"))
-        self.assertFalse(ga.save_to_json("../data/try1"))
 
     def test_init_(self):
         pass
