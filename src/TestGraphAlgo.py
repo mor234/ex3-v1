@@ -7,7 +7,7 @@ class TestDiGraph(unittest.TestCase):
 
     def test_plot_graph(self):
         ga = GraphAlgo()
-        g=DiGraph()
+        g = DiGraph()
         g.add_node(1, (1, 7));
         g.add_node(2, (2, 7));
         g.add_node(3, (0, 7));
@@ -15,10 +15,10 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1, 2, 1.5)
         g.add_edge(2, 1, 3);
         g.add_edge(1, 3, 6);
-        ga.graph=g
+        ga.graph = g
         ga.plot_graph()
         g.remove_edge(1, 3)
-        g.add_edge(3,1, 6)
+        g.add_edge(3, 1, 6)
         ga.plot_graph()
 
     def test_load_save_json(self):
@@ -68,11 +68,10 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1, 2, 4)
 
         g_algo = GraphAlgo(g)
+        g_algo.plot_graph()
+        print("sortest", g_algo.shortest_path(0, 1))
 
-        print(g_algo.shortest_path(0, 1))
-
-        print(g_algo.shortest_path(0, 2))
-
+        print("sortest", g_algo.shortest_path(0, 2))
 
         # pathCheckGraph = DiGraph()
         # for i in range(7):
@@ -91,7 +90,6 @@ class TestDiGraph(unittest.TestCase):
         # pathCheckGraph.add_edge(4, 5, 5);
         #
         # pathCheckGraph.add_edge(5, 6, 4);
-
 
     # def connected_component(self, id1: int) -> list:
     #     """

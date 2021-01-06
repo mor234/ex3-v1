@@ -287,13 +287,29 @@ class GraphAlgo(GraphAlgoInterface):
         y_nodes = []
         i = 0
         for node in nodes.values():
-            x_nodes.append(node.pos[0])
-            y_nodes.append(node.pos[1])
+            if node.pos is None:
+                x_nodes.append(random.rand())
+                y_nodes.append(random.rand())
+            else:
+                x_nodes.append(node.pos[0])
+                y_nodes.append(node.pos[1])
+            label = "{:}".format(node.id)
+            plt.annotate(label,  # this is the text
+                         xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
+                         textcoords="offset points",  # how to position the text
+                         ha='center', color="green")  # horizontal alignment can be left, right or center
+
+            label = "{:}".format(node.id)
+            plt.annotate(label,  # this is the text
+                         xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
+                         textcoords="offset points",  # how to position the text
+                         ha='center',  # horizontal alignment can be left, right or center
+                         color="green")
             index_for_node[node.id] = i
             i += 1
 
         print(x_nodes)
-        plt.scatter(x_nodes, y_nodes, label="vertx", color='b', s=100)
+        plt.scatter(x_nodes, y_nodes, label="vertx", color='r', s=100)
 
         plt.xlabel("x ax is ")
         plt.ylabel("y ax is ")
@@ -302,58 +318,27 @@ class GraphAlgo(GraphAlgoInterface):
         for (id1, id2), weight in g.edges.items():
             index_src = index_for_node[id1]
             index_dest = index_for_node[id2]
-            # plt.annotate('', xy=(x_nodes[index_src], y_nodes[index_src]), xycoords='data',
-            #              xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
-            #              arrowprops=dict(facecolor='black', arrowstyle='<-'))
+            # paint arrows
             plt.annotate('', xy=(x_nodes[index_src], y_nodes[index_src]), xycoords='data',
                          xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
-                         arrowprops=dict(facecolor='black',width=0.1,headlength=8,headwidth=8))
-        """ middle_point_x = abs(x_nodes[index_dest] - x_nodes[index_src] / 2)
-         middle_point_y = abs(y_nodes[index_dest] - y_nodes[index_src] / 2)
-         label = "{:.2f}".format(weight)
+                         arrowprops=dict(facecolor='black', arrowstyle='<-'))
 
-         plt.annotate(label,  # this is the text
-                      xy=(middle_point_x, middle_point_y),  # this is the point to label
-                       textcoords="offset points",  # how to position the text
-                      ha='center')  # horizontal alignment can be left, right or center
-                 """
+            plt.annotate('', xy=(x_nodes[index_dest], y_nodes[index_dest]), xycoords='data',
+                         xytext=(x_nodes[index_src], y_nodes[index_src]), textcoords='data',
+                         arrowprops=dict(facecolor='black', width=0.1, headlength=8, headwidth=8))
+            # paint weight
+            middle_point_x = (x_nodes[index_dest] + x_nodes[index_src]) / 2
+            middle_point_y = (y_nodes[index_dest] + y_nodes[index_src]) / 2
+            print(middle_point_x, middle_point_y)
+
+            label = "{:.2f}".format(weight)
+            # print(label)
+
+            plt.annotate(text=label,  # this is the text
+                         xy=(middle_point_x, middle_point_y),  # this is the point to label
+                         textcoords="offset points",  # how to position the text
+                         color="blue")
 
         # Showing the graph
         plt.legend()
         plt.show()
-
-        # x = np.arange(0, 10, 0.1)
-        # plt.figure(figsize=(20, 10))
-        # y = np.sin(x)
-        # plt.plot(x, y, "D-")
-        # plt.plot(x_vals, y_vals, "ro-")
-        # plt.show()
-        #
-        # x = [0.15, 0.3, 0.45, 0.6, 0.75]
-        # y = [2.56422, 3.77284, 3.52623, 3.51468, 3.02199]
-        # n = [58, 651, 393, 203, 123]
-        #
-        # fig, ax = plt.subplots()
-        # ax.scatter(x, y)
-        #
-        # for i, txt in enumerate(n):
-        #     ax.annotate(n[i], (x[i] + 0.005, y[i] + 0.005))
-        #     arrowprops=dict(arrowstyle="simple")
-        #
-        # plt.plot(x, y)
-        # plt.show()
-        #
-        # fig = plt.figure()
-        # ax = plt.axes(projection="3d")
-        #
-        # z_line = np.linspace(0, 15, 1000)
-        # x_line = np.cos(z_line)
-        # y_line = np.sin(z_line)
-        # ax.plot3D(x_line, y_line, z_line, 'gray')
-        #
-        # z_points = 15 * np.random.random(100)
-        # x_points = np.cos(z_points) + 0.1 * np.random.randn(100)
-        # y_points = np.sin(z_points) + 0.1 * np.random.randn(100)
-        # ax.scatter3D(x_points, y_points, z_points, c=z_points, cmap='hsv');
-        #
-        # plt.show()
