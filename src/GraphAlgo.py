@@ -1,7 +1,6 @@
 import json
 from typing import List
 # import networkx as nx
-from matplotlib.axes import Axes
 from numpy import random
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +8,6 @@ import numpy as np
 from DiGraph import DiGraph
 from src.GraphAlgoInterface import GraphAlgoInterface
 from src.GraphInterface import GraphInterface
-import heapq
 
 
 class GraphAlgo(GraphAlgoInterface):
@@ -43,7 +41,6 @@ class GraphAlgo(GraphAlgoInterface):
                 g.add_edge(edge['src'], edge['dest'], edge['w'])
 
             self.graph = g
-            # print (g)
             return True
         except Exception as e:
             print(e)
@@ -140,9 +137,7 @@ class GraphAlgo(GraphAlgoInterface):
 
         self.graph.nodes[id1].tag = 0
         distance_queue = [(node.tag, node.id) for node in self.graph.nodes.values()]
-        distance_queue.sort()
-        print(distance_queue)
-        print(distance_queue[0])
+        distance_queue.sort(reverse=True)
 
         # find the dist using diextra algorithm
         while len(distance_queue) > 0:
@@ -160,34 +155,28 @@ class GraphAlgo(GraphAlgoInterface):
                 if not node.visited:
                     if curr_dist + nodes_from[dest_node_key] < node.tag:
                         # update tag
+                        tag_before_change = node.tag
                         node.tag = curr_dist + nodes_from[dest_node_key]
-                        distance_queue.remove(dest_node_key)
-                        distance_queue.append((node.tag, node))
+                        distance_queue.remove((tag_before_change, node.id))
+                        distance_queue.append((node.tag, node.id))
+            distance_queue.sort(reverse=True)
 
-            # 1. Pop every item
-            # while len(unvisited_queue):
-            # heapq.heappop(unvisited_queue)
-
-            distance_queue.sort()
-
+        # end of loop
         # if there is no path to id2 from id1
         if ans_dist == float("inf"):
             return ans_dist, ans_path
 
         # find the path
         curr_node = self.graph.nodes.get(id2)
-        curr_dist = curr_node.tag
-        ans_path.insert(0, curr_node.id)
-        while curr_node.id != id1:
-            node = self.graph.nodes.get(node_key)
+        ans_path.insert(0, curr_node.id)  # add to the start of the list path
+        while curr_node.id is not id1:
             nodes_to = self.graph.all_in_edges_of_node(curr_node.id)
-            for node_key in nodes_to:
-                if curr_dist - nodes_from[node_key] == node.tag:
+            for neighbor_key in nodes_to:
+                node=self.graph.nodes[neighbor_key]
+                if np.math.isclose((curr_node.tag - nodes_to[neighbor_key]), node.tag):
                     curr_node = node
-                    curr_dist = curr_node.tag
                     break
-
-            ans_path.insert(0, curr_node.id)
+            ans_path.insert(0, curr_node.id)# add the node to the start of the list
 
         return ans_dist, ans_path
 
@@ -293,16 +282,12 @@ class GraphAlgo(GraphAlgoInterface):
             else:
                 x_nodes.append(node.pos[0])
                 y_nodes.append(node.pos[1])
-            label = "{:}".format(node.id)
-            plt.annotate(label,  # this is the text
-                         xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
-                         textcoords="offset points",  # how to position the text
-                         ha='center', color="green")  # horizontal alignment can be left, right or center
+
 
             label = "{:}".format(node.id)
             plt.annotate(label,  # this is the text
                          xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
-                         textcoords="offset points",  # how to position the text
+                         # textcoords="offset points",  # how to position the text
                          ha='center',  # horizontal alignment can be left, right or center
                          color="green")
             index_for_node[node.id] = i
@@ -323,21 +308,21 @@ class GraphAlgo(GraphAlgoInterface):
                          xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
                          arrowprops=dict(facecolor='black', arrowstyle='<-'))
 
-            plt.annotate('', xy=(x_nodes[index_dest], y_nodes[index_dest]), xycoords='data',
-                         xytext=(x_nodes[index_src], y_nodes[index_src]), textcoords='data',
-                         arrowprops=dict(facecolor='black', width=0.1, headlength=8, headwidth=8))
+            # plt.annotate('', xy=(x_nodes[index_dest], y_nodes[index_dest]), xycoords='data',
+            #              xytext=(x_nodes[index_src], y_nodes[index_src]), textcoords='data',
+            #              arrowprops=dict(facecolor='black', width=0.1, headlength=8, headwidth=8))
             # paint weight
-            middle_point_x = (x_nodes[index_dest] + x_nodes[index_src]) / 2
-            middle_point_y = (y_nodes[index_dest] + y_nodes[index_src]) / 2
-            print(middle_point_x, middle_point_y)
-
-            label = "{:.2f}".format(weight)
-            # print(label)
-
-            plt.annotate(text=label,  # this is the text
-                         xy=(middle_point_x, middle_point_y),  # this is the point to label
-                         textcoords="offset points",  # how to position the text
-                         color="blue")
+            # middle_point_x = (x_nodes[index_dest] + x_nodes[index_src]) / 2
+            # middle_point_y = (y_nodes[index_dest] + y_nodes[index_src]) / 2
+            # print(middle_point_x, middle_point_y)
+            #
+            # label = "{:.2f}".format(weight)
+            # # print(label)
+            #
+            # plt.annotate(text=label,  # this is the text
+            #              xy=(middle_point_x, middle_point_y),  # this is the point to label
+            #              textcoords="offset points",  # how to position the text
+            #              color="blue")
 
         # Showing the graph
         plt.legend()

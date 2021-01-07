@@ -68,28 +68,42 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1, 2, 4)
 
         g_algo = GraphAlgo(g)
-        g_algo.plot_graph()
-        print("sortest", g_algo.shortest_path(0, 1))
+        # g_algo.plot_graph()
+        # print("sortest", g_algo.shortest_path(0, 1))
 
         print("sortest", g_algo.shortest_path(0, 2))
 
-        # pathCheckGraph = DiGraph()
-        # for i in range(7):
-        #     pathCheckGraph.add_node(i)
-        #
-        # pathCheckGraph.add_edge(1, 2, 3);
-        # pathCheckGraph.add_edge(1, 4, 4);
-        #
-        # pathCheckGraph.add_edge(2, 4, 6);
-        # pathCheckGraph.add_edge(2, 5, 7);
-        # pathCheckGraph.add_edge(2, 3, 2);
-        #
-        # pathCheckGraph.add_edge(3, 5, 1);
-        # pathCheckGraph.add_edge(3, 6, 8);
-        #
-        # pathCheckGraph.add_edge(4, 5, 5);
-        #
-        # pathCheckGraph.add_edge(5, 6, 4);
+        path_check_graph = DiGraph()
+        for i in range(7):
+            path_check_graph.add_node(i)
+
+        path_check_graph.add_edge(1, 2, 3)
+        path_check_graph.add_edge(1, 4, 4)
+
+        path_check_graph.add_edge(2, 4, 6)
+        path_check_graph.add_edge(2, 5, 7)
+        path_check_graph.add_edge(2, 3, 2)
+
+        path_check_graph.add_edge(3, 5, 1)
+        path_check_graph.add_edge(3, 6, 8)
+
+        path_check_graph.add_edge(4, 5, 5)
+
+        path_check_graph.add_edge(5, 6, 4)
+        g_algo.graph=path_check_graph
+
+        len,path= g_algo.shortest_path(1, 6);
+        print (path)
+        print(len)
+
+        self.assertEqual(path,[1,2,3,5,6], "didn't give the correct path")
+
+        self.assertEqual(len, 10)
+
+
+
+
+
 
     # def connected_component(self, id1: int) -> list:
     #     """
@@ -122,3 +136,7 @@ class TestDiGraph(unittest.TestCase):
     #     @return: None
     #     """
     #     raise NotImplementedError
+
+
+if __name__ == '__main__':
+    unittest.main()
