@@ -198,47 +198,79 @@ class GraphAlgo(GraphAlgoInterface):
         curr_node = self.graph.nodes[id1]
         curr_node.tag = curr_node.id
 
-        stack = []
+        stack_nodes_from = []
         neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
         """
         """
+        flag_visited_all_nei = True
         while True:
-            for node in neighbors_list:
+            for key_node in neighbors_list:
+                node = self.graph.nodes[key_node]
                 if not node.visited:  # if the node still hasn't reached ll his neighbors
-                    if node.tag is float("inf"):  # if not this is the first time arriving to the node
+                    if np.math.isclose(node.tag, float("inf")):  # if not this is the first time arriving to the node
                         node.tag = curr_node.id  # sign which node it came from.
                         curr_node = node
                         neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
+                        flag_visited_all_nei = False
+                        break
+
 
             # don't have any neighbors one got to.
-            stack.append(curr_node)
-            curr_node.visited = True
-            if curr_node.id is id1:  # if all the neighbors of id1 are visited
-                break
-            curr_node = self.graph.nodes[curr_node.tag]  # go back
+            if flag_visited_all_nei:
+                stack_nodes_from.append(curr_node.id)
+                curr_node.visited = True
+                if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                    break
+                curr_node = self.graph.nodes[curr_node.tag]  # go back
+                neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)
 
-            self.init_tag_visited()
-            curr_node = stack[-1]
-            curr_node.tag = curr_node.id
 
-        strongly_component = [curr_node]
+            else:
+                flag_visited_all_nei = True
+
+        self.init_tag_visited()
+        print("first stack ",stack_nodes_from)
+
+        curr_node = self.graph.nodes[id1]
+        neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
+        curr_node.tag = curr_node.id
+
+
+        stack_nodes_to = []
+
+        flag_visited_all_nei = True
 
         while True:
-            neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
-            for node in neighbors_list:
+            for key_node in neighbors_list:
+                node = self.graph.nodes[key_node]
                 if not node.visited:  # if the node still hasn't reached ll his neighbors
-                    if node.tag is float("inf"):  # if not this is the first time arriving to the node
+                    if np.math.isclose(node.tag,
+                                       float("inf")):  # if not this is the first time arriving to the node
                         node.tag = curr_node.id  # sign which node it came from.
                         curr_node = node
-                        strongly_component.append(curr_node)
-                        curr_node.is_part_of_scc = True
                         neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
+                        flag_visited_all_nei = False
+                        break
 
             # don't have any neighbors one got to.
-            curr_node.visited = True
-            if curr_node.id is id1:  # if all the neighbors of id1 are visited
-                return strongly_component
-            curr_node = self.graph.nodes[curr_node.tag]  # go back
+            if flag_visited_all_nei:
+                stack_nodes_to.append(curr_node.id)
+                curr_node.visited = True
+                if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                    break
+                curr_node = self.graph.nodes[curr_node.tag]  # go back
+                neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
+
+
+            else:
+                flag_visited_all_nei = True
+        print("second stack ",stack_nodes_to)
+
+        ans=list(set(stack_nodes_from)&set(stack_nodes_to))
+        for key_node in ans:
+            self.graph.nodes[key_node].is_part_of_scc=True
+
+        return ans
 
     def connected_components(self) -> List[list]:
         """
@@ -251,7 +283,7 @@ class GraphAlgo(GraphAlgoInterface):
             return []
         self.init_is_part_of_scc()
         list_of_scc = []
-        for node_key, node in self.graph.nodes:
+        for node_key, node in self.graph.nodes.items():
             if not node.is_part_of_scc:
                 list_of_scc.append(self.connected_component(node_key))
 
@@ -293,7 +325,7 @@ class GraphAlgo(GraphAlgoInterface):
             index_for_node[node.id] = i
             i += 1
 
-        print(x_nodes)
+
         plt.scatter(x_nodes, y_nodes, label="vertx", color='r', s=100)
 
         plt.xlabel("x ax is ")
