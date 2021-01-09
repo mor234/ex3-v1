@@ -3,7 +3,7 @@ from DiGraph import DiGraph
 from GraphAlgo import GraphAlgo
 
 
-class TestDiGraph(unittest.TestCase):
+class TestGraphAlgo(unittest.TestCase):
 
     def test_plot_graph(self):
         ga = GraphAlgo()
@@ -19,6 +19,8 @@ class TestDiGraph(unittest.TestCase):
         ga.plot_graph()
         g.remove_edge(1, 3)
         g.add_edge(3, 1, 6)
+        ga.plot_graph()
+        ga.load_from_json("../data/A5")
         ga.plot_graph()
 
     def test_load_save_json(self):
@@ -40,6 +42,7 @@ class TestDiGraph(unittest.TestCase):
         @param id1: The start node id
         @param id2: The end node id
         @return: The distance of the path, a list of the nodes ids that the path goes through
+
         Example:
 #      >>> from GraphAlgo import GraphAlgo
 #       >>> g_algo = GraphAlgo()
@@ -52,6 +55,7 @@ class TestDiGraph(unittest.TestCase):
 #        (1, [0, 1])
 #        >>> g_algo.shortestPath(0,2)
 #        (5, [0, 1, 2])
+
         Notes:
         If there is no path between id1 and id2, or one of them dose not exist the function returns (float('inf'),[])
         More info:
@@ -103,6 +107,7 @@ class TestDiGraph(unittest.TestCase):
 
 
 
+
     def test_connected_component(self):
         """
         Finds the Strongly Connected Component(SCC) that node id1 is a part of.
@@ -140,52 +145,32 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(4, 6, 1.5)
         g.add_edge(6, 5, 3)
 
-
         ga.graph = g
-        ga.plot_graph()
-        print(ga.connected_component(1))
-        print(ga.connected_component(5))
-        print(ga.connected_components())
+        ga.save_to_json("comp_graph.json")
+
+        ga.connected_components()
 
 
 
-
-    def test_connected_components(self):
-        """
-        Finds all the Strongly Connected Component(SCC) in the graph.
-        @return: The list all SCC
-
-        Notes:
-        If the graph is None the function should return an empty list []
-        """
-        ga = GraphAlgo()
-        g = DiGraph()
-        g.add_node(1)
-        g.add_node(2)
-        g.add_node(3)
-        g.add_node(4)
-        g.add_node(5)
-        g.add_node(6)
-
-        g.add_edge(1, 2, 1.5)
-        g.add_edge(2, 6, 3)
-        g.add_edge(1, 3, 6)
-        g.add_edge(3, 1, 8)
-        g.add_edge(3, 2, 1.5)
-        g.add_edge(5, 4, 6)
-        g.add_edge(4, 6, 1.5)
-        g.add_edge(6, 5, 3)
-
-        ga.graph = g
-        ga.plot_graph()
-        print(ga.connected_component(1))
-        print(ga.connected_component(5))
-        print(ga.connected_components())
-
-
-
-
-
+    # def connected_components(self) :
+    #     """
+    #     Finds all the Strongly Connected Component(SCC) in the graph.
+    #     @return: The list all SCC
+    #
+    #     Notes:
+    #     If the graph is None the function should return an empty list []
+    #     """
+    #     raise NotImplementedError
+    #
+    #
+    # def plot_graph(self) -> None:
+    #     """
+    #     Plots the graph.
+    #     If the nodes have a position, the nodes will be placed there.
+    #     Otherwise, they will be placed in a random but elegant manner.
+    #     @return: None
+    #     """
+    #     raise NotImplementedError
 
 
 if __name__ == '__main__':

@@ -32,10 +32,11 @@ class GraphAlgo(GraphAlgoInterface):
                 fs.close()
             g = DiGraph()
             for node in j['Nodes']:
+                pos=None
                 if 'pos' in node:
                     pos = node['pos'].split(',')
                     pos = (float(pos[0]), float(pos[1]), float(pos[2]))
-                    g.add_node(node['id'], pos)
+                g.add_node(node['id'], pos)
 
             for edge in j['Edges']:
                 g.add_edge(edge['src'], edge['dest'], edge['w'])
@@ -62,7 +63,10 @@ class GraphAlgo(GraphAlgoInterface):
                 del single_node_dict["visited"]
                 del single_node_dict["is_part_of_scc"]
                 del single_node_dict["tag"]
-                single_node_dict["pos"] = ','.join(single_node_dict["pos"])
+                if single_node_dict["pos"] is not None:
+                    single_node_dict["pos"] = ','.join(list(single_node_dict["pos"]))
+                else:
+                    del single_node_dict["pos"]
                 nodes_dict.append(single_node_dict)
 
             class Edge():
@@ -229,7 +233,6 @@ class GraphAlgo(GraphAlgoInterface):
                 flag_visited_all_nei = True
 
         self.init_tag_visited()
-        print("first stack ",stack_nodes_from)
 
         curr_node = self.graph.nodes[id1]
         neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
@@ -264,7 +267,6 @@ class GraphAlgo(GraphAlgoInterface):
 
             else:
                 flag_visited_all_nei = True
-        print("second stack ",stack_nodes_to)
 
         ans=list(set(stack_nodes_from)&set(stack_nodes_to))
         for key_node in ans:
@@ -315,18 +317,16 @@ class GraphAlgo(GraphAlgoInterface):
                 x_nodes.append(node.pos[0])
                 y_nodes.append(node.pos[1])
 
+            # label = "{:}".format(node.id)
+            # ax = plt.subplots()
+            # ax.text(x_nodes[i], y_nodes[i]+0.5,label)
 
-            label = "{:}".format(node.id)
-            plt.annotate(label,  # this is the text
-                         xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
-                         # textcoords="offset points",  # how to position the text
-                         ha='center',  # horizontal alignment can be left, right or center
-                         color="green")
+
+
             index_for_node[node.id] = i
             i += 1
 
 
-        plt.scatter(x_nodes, y_nodes, label="vertx", color='r', s=100)
 
         plt.xlabel("x ax is ")
         plt.ylabel("y ax is ")
@@ -338,24 +338,44 @@ class GraphAlgo(GraphAlgoInterface):
             # paint arrows
             plt.annotate('', xy=(x_nodes[index_src], y_nodes[index_src]), xycoords='data',
                          xytext=(x_nodes[index_dest], y_nodes[index_dest]), textcoords='data',
-                         arrowprops=dict(facecolor='black', arrowstyle='<-'))
+                         arrowprops=dict(facecolor='black', arrowstyle='<| -'))
 
-            # plt.annotate('', xy=(x_nodes[index_dest], y_nodes[index_dest]), xycoords='data',
-            #              xytext=(x_nodes[index_src], y_nodes[index_src]), textcoords='data',
-            #              arrowprops=dict(facecolor='black', width=0.1, headlength=8, headwidth=8))
-            # paint weight
-            # middle_point_x = (x_nodes[index_dest] + x_nodes[index_src]) / 2
-            # middle_point_y = (y_nodes[index_dest] + y_nodes[index_src]) / 2
-            # print(middle_point_x, middle_point_y)
-            #
-            # label = "{:.2f}".format(weight)
-            # # print(label)
-            #
-            # plt.annotate(text=label,  # this is the text
-            #              xy=(middle_point_x, middle_point_y),  # this is the point to label
-            #              textcoords="offset points",  # how to position the text
-            #              color="blue")
+        for node in self.graph.nodes.values():
+            label = "{:}".format(node.id)
+            i = index_for_node[node.id]
 
+            plt.annotate(label,  # this is the text
+                         xy=(x_nodes[i], y_nodes[i]),  # this is the point to label
+                         xytext=(0, 7), ha='center',
+                         textcoords="offset points",  # how to position the text
+                         # ha='center',  # horizontal alignment can be left, right or center
+                         color="lime")
+        plt.scatter(x_nodes, y_nodes, label="vertx", color='red', s=100)
+
+            #
+            # plt.arrow(x_nodes[index_src], y_nodes[index_src], x_nodes[index_dest] - x_nodes[index_src],
+            #           y_nodes[index_dest] - y_nodes[index_src]
+            #           , width=0.0001, head_width=0.01, length_includes_head=True, color='yellow')
+
+
+        #     middle_point_x = (x_nodes[index_dest] + x_nodes[index_src]) / 2
+        #     middle_point_y = (y_nodes[index_dest] + y_nodes[index_src]) / 2
+        #     print(middle_point_x, middle_point_y)
+        #
+        #     label = "{:.2f}".format(weight)
+        #     # print(label)
+        #     if(index_src>index_dest):
+        #         print("f")
+        #     text_params = {'ha': 'center', 'va': 'center', 'family': 'sans-serif',
+        #                        'fontweight': 'bold'}
+        #
+        #     # plt.text(middle_point_x, middle_point_y,label, color='b', text_params)
+        #
+        #     # plt.annotate(text=label,  # this is the text
+        #     #              xy=(middle_point_x, middle_point_y,),  # this is the point to label
+        #     #              textcoords="offset points",  # how to position the text
+        #     #              color="blue")
+        #
         # Showing the graph
         plt.legend()
         plt.show()
