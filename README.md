@@ -8,7 +8,7 @@ the src contains different classes which represents the directional weighted gra
 ## the classes we use for this program:
 
 ## NodeData
-This class is used for our algorithm in  DiGraph and GraphAlgo classes
+This class is used for our algorithm in  DiGraph and GraphAlgo classes its represents a node in the graph
 
 ## Digraph
 This class implements a directed weighted graph.
