@@ -34,17 +34,20 @@ class TestDiGraph(unittest.TestCase):
         g.add_node(2);
         g.add_edge(1, 2, 0.5)#1
         g.add_edge(1, 0, 0.5)#2
-        g.add_edge(0,1, 0.5)
-        g.add_edge(0, 2, 0.5)
-        g.add_edge(1, 0,3)
+        g.add_edge(0,1, 0.5)#3
+        g.add_edge(0, 2, 0.5)#4
+        g.add_edge(1, 0,3)#4 ,not suppose to change
 
-        self.assertEqual(g.v_size(), 4, " edge size is not correct")
-        self.assertEqual(g.v_size(), 3, " node size is not correct after adding an existing node")
-        self.assertEqual(g.v_size(), 3, " node size is not suppose to change after adding edge")
-        g.remove_node(0)
-        self.assertEqual(g.v_size(), 2, " node size is did not change after removing node")
+        self.assertEqual(g.e_size(), 4, " edge size is not correct")
+        g.remove_edge(1,0)
+        self.assertEqual(g.e_size(), 3, " edge size is not correct after removing an edge")
+        g.remove_node(1)
+        self.assertEqual(g.e_size(), 1, " edge size is not correct after removing a node. suppose to remove connected edges")
 
     def test_get_all_v(self):
+        """
+        check function that returns all vertx of the graph
+        """
 
         g = DiGraph()
         g.add_node(0, (0, 7,0));
@@ -52,7 +55,6 @@ class TestDiGraph(unittest.TestCase):
         g.add_node(2, (2, 7,0));
 
         nodes = g.get_all_v();
-        print(len(nodes))
         self.assertEqual(len(nodes), 3, "didn't get the right collection");
 
         index_counter = [0, 0, 0]
@@ -66,7 +68,7 @@ class TestDiGraph(unittest.TestCase):
         self.assertEqual(index_counter[2], 1, "not found node 3");
 
     def test_all_in_out_edges_of_node(self):
-        """return a dictionary of all the nodes connected to (into) node_id ,
+        """check function that returns a dictionary of all the nodes connected to (into) node_id ,
         each node is represented using a pair (other_node_id, weight)
         """
 
@@ -96,10 +98,6 @@ class TestDiGraph(unittest.TestCase):
 
         self.assertEqual(len(edges_out_3), 0, "didn't get the right dictionary")
 
-    def test_all_out_edges_of_node(self):
-        """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
-        (other_node_id, weight)
-        """
         g = DiGraph()
         g.add_node(1)
         g.add_node(2)
@@ -111,8 +109,8 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1,3,13)
         g.add_edge(2,3,23)
         g.add_edge(3,1,31)
-        print(g.all_out_edges_of_node(1))
-       # self.assertEqual(g.all_out_edges_of_node(1),{"2":(2,12)})
+        self.assertEqual(g.all_out_edges_of_node(1),{4: 14, 2: 12, 3: 13})
+        self.assertEqual(g.all_in_edges_of_node(1),{2: 21, 3: 31})
 
 
 
@@ -134,7 +132,7 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1,2,1.5)
         mc_after_add_edge = g.get_mc()
         self.assertTrue(mc_after_add_node< mc_after_add_edge, "not update mc correctly after add")
-        g.add_edge(1,2,7,0)
+        g.add_edge(1,2,7)
         self.assertEqual(g.get_mc(), mc_after_add_edge, "mc not suppose to change when adding already existing edge")
         self.assertEqual(g.edges[(1,2)], 1.5, "edge not suppose to change when adding already existing edge")
         g.remove_node(3)
@@ -157,9 +155,9 @@ class TestDiGraph(unittest.TestCase):
 
         self.assertTrue(g.add_edge(0, 1, 0.76), "1")
         self.assertFalse((1, 0) in g.edges, "opposite direction edge not suppose to be created")
-        self.assertEquals(g.edges[0, 1], 0.76, "didn't create the edge")
+        self.assertEqual(g.edges[0, 1], 0.76, "didn't create the edge")
         self.assertFalse(g.add_edge(0, 1, 8), "2")  # return: True if the edge was added successfully, False o.w.
-        self.assertEquals(g.edges[0, 1], 0.76, "the edge didn't remain the same")
+        self.assertEqual(g.edges[0, 1], 0.76, "the edge didn't remain the same")
 
     def test_add_node(self):
         g = DiGraph()
@@ -191,8 +189,8 @@ class TestDiGraph(unittest.TestCase):
         self.assertTrue(g.remove_node(1))
         self.assertFalse(1 in g.nodes, "didn't delete node 1")
         self.assertFalse((1, 2) in g.edges, "didn't delete edge ");
-        self.assertFalse((2, 1) in g.edges, "didn't delete edge in the oposite direction.");
-        self.assertTrue(mc + 4 <= g.get_mc(), "didn't update mc correctly");
+        self.assertFalse((2, 1) in g.edges, "didn't delete edge in the opposite direction.");
+        self.assertTrue(mc< g.get_mc(), "didn't update mc correctly");
 
     def test_remove_edge(self):
 
@@ -212,5 +210,5 @@ class TestDiGraph(unittest.TestCase):
         self.assertFalse((0, 1) in g.edges, "didn't return false for not existing edge.");
         self.assertTrue(mc + 1 <= g.get_mc(), "didn't update mc correctly");
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    unittest.main()
