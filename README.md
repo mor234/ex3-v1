@@ -4,17 +4,18 @@
 ## about our project:
 this project created for an assignment for object orientep programming course in Ariel University
 In the project we presents an implementation of a directed weighted graph with different methods and algorithms using by Python.
-the src contains different classes which represents the directional weighted graph and the methods you can do on it.
+the src contains different classes which represents the directional weighted graph and the methods you can do on it.  There are three classes  in our project : the DiGraph and GraphAlgo and NodeData . 
 
 ## the classes we use for this program:
 
 ## NodeData
-This class is used for our algorithm in  DiGraph and GraphAlgo classes its represents a node in the graph
+This class is used for our algorithm in  DiGraph and GraphAlgo classes its represents a single node in graph, for every node have unique key ,such as : the neighbors, the node that direct to him, tag, info, and dictionay of all his neighbors.
 
 ## Digraph
-This class implements a directed weighted graph.
+This class implements a directed weighted graph.  here there is a lot of method such as  operate sum operations on the graph, removeNode,  AddNode ,  conncet between two nodes and put weight for the edge.
 
-## Methods
+
+## His methods
 
 | Function  | Explanation |
 | ------------- | ------------- |
@@ -31,7 +32,9 @@ This class implements a directed weighted graph.
 
 
 ## GraphAlgo
-The class represents algorithms of a DiGraph class.
+The class represents algorithms of a DiGraph class. In this class we can find the shortestpath from src to other destination, found all the strongly component of the graph, find the Strongly Connected Component of a unique key, export Json file of the graph that contain all the edges and the nodes of the graph and read from Json file and load the class with him.
+
+## His methods
 
 | Function  | Explanation |
 | ------------- | ------------- |
@@ -57,19 +60,5 @@ we are going to compare this function only between Java algotihms and Python alg
 ### shortest path:
 returning the shortest path distance between two nodes in the graph and a list of nodes that represents the shortest path between this 2 nodes. 
 
-### here is the result of our comp
-
-| Graph  | Time for path 1 | Time for path 2 | Time for finding all strongly connected component  | Time for finding comp1 |  Time for finding comp2 |
-| -----  | --------------- | --------------- | -------------------------------------------------  | ---------------------- |  ---------------------- |
-
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         | Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |
-| ------- | ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- | ----- | ------- | -------- |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
-|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
 
 
