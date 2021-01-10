@@ -48,10 +48,25 @@ in this comparison we take a several graphs and test which algorithm has better 
 
 ## the function that we comparig :
 
-### connected component:  we only compare this function only between Java algotihms and Python algotihms because NetworkX doesn't use it.
+### connected component: 
+we only compare this function only between Java algotihms and Python algotihms because NetworkX doesn't use it.
 this method set the Strongly Connected Component  of a specific node.
-###connected components:  we are going to compare this function only between Java algotihms and Python algotihms because NetworkX doesn't use it. this method return all the connected components of the graph.
+### connected components:
+we are going to compare this function only between Java algotihms and Python algotihms because NetworkX doesn't use it. this method return all the connected components of the graph.
 
-### shortest path: returning the shortest path distance between two nodes in the graph and a list of nodes that represents the shortest path between this 2 nodes. 
+### shortest path:
+returning the shortest path distance between two nodes in the graph and a list of nodes that represents the shortest path between this 2 nodes. 
 
-here is the result of our comp
+### here is the result of our comp
+
+| Graph  | Time for path 1 | Time for path 2 | Time for finding all strongly connected component  | Time for finding comp1 |  Time for finding comp2 |
+| ------------- | ------------- |
+|         | Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+|         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
+
+
