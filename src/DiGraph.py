@@ -132,6 +132,9 @@ class DiGraph(GraphInterface):
         return False  # if the edge doesn't exist
 
     def __repr__(self):
+        """
+        :return: a string representation odf the graph
+        """
         ans = "Graph: | V |= " + str(self.v_size()) + ", | E |= " + str(self.e_size())
         return ans
 

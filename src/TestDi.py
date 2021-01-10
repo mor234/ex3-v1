@@ -8,22 +8,48 @@ class TestDiGraph(unittest.TestCase):
 
     def test_v_size(self):
         """
-        Returns the number of vertices in this graph
-        @return: The number of vertices in this graph
+        check the function that returns the number of vertices in this graph
         """
+        g=DiGraph()
+        g.add_node(0);
+        g.add_node(1);
+        g.add_node(2);
+        self.assertEqual(g.v_size(),3," node size is not correct")
+        g.add_node(2);
+        self.assertEqual(g.v_size(),3," node size is not correct after adding an existing node")
+        g.add_edge(1,2,0.5)
+        self.assertEqual(g.v_size(),3," node size is not suppose to change after adding edge")
+        g.remove_node(0)
+        self.assertEqual(g.v_size(),2," node size is did not change after removing node")
+
+
 
     def test_e_size(self):
         """
-        Returns the number of edges in this graph
-        @return: The number of edges in this graph
+        check the function that returns the number of edges in this graph
         """
+        g = DiGraph()
+        g.add_node(0);
+        g.add_node(1);
+        g.add_node(2);
+        g.add_edge(1, 2, 0.5)#1
+        g.add_edge(1, 0, 0.5)#2
+        g.add_edge(0,1, 0.5)
+        g.add_edge(0, 2, 0.5)
+        g.add_edge(1, 0,3)
+
+        self.assertEqual(g.v_size(), 4, " edge size is not correct")
+        self.assertEqual(g.v_size(), 3, " node size is not correct after adding an existing node")
+        self.assertEqual(g.v_size(), 3, " node size is not suppose to change after adding edge")
+        g.remove_node(0)
+        self.assertEqual(g.v_size(), 2, " node size is did not change after removing node")
 
     def test_get_all_v(self):
 
         g = DiGraph()
-        g.add_node(0, (0, 7));
-        g.add_node(1, (1, 7));
-        g.add_node(2, (2, 7));
+        g.add_node(0, (0, 7,0));
+        g.add_node(1, (1, 7,0));
+        g.add_node(2, (2, 7,0));
 
         nodes = g.get_all_v();
         print(len(nodes))
@@ -33,7 +59,7 @@ class TestDiGraph(unittest.TestCase):
 
         for node in nodes.values():
             index_counter[node.id] += 1
-            self.assertEqual((node.id, 7), node.pos, "not got the node correctly");
+            self.assertEqual((node.id, 7,0), node.pos, "not got the node correctly");
 
         self.assertEqual(index_counter[0], 1, "not found node 1");
         self.assertEqual(index_counter[1], 1, "not found node 2");
@@ -46,9 +72,9 @@ class TestDiGraph(unittest.TestCase):
 
         g = DiGraph()
 
-        g.add_node(1, (1, 7));
-        g.add_node(2, (2, 7));
-        g.add_node(3, (0, 7));
+        g.add_node(1, (1, 7,0));
+        g.add_node(2, (2, 7,0));
+        g.add_node(3, (0, 7,0));
 
         g.add_edge(1, 2, 1.5)
         g.add_edge(2, 1, 3);
@@ -108,7 +134,7 @@ class TestDiGraph(unittest.TestCase):
         g.add_edge(1,2,1.5)
         mc_after_add_edge = g.get_mc()
         self.assertTrue(mc_after_add_node< mc_after_add_edge, "not update mc correctly after add")
-        g.add_edge(1,2,7)
+        g.add_edge(1,2,7,0)
         self.assertEqual(g.get_mc(), mc_after_add_edge, "mc not suppose to change when adding already existing edge")
         self.assertEqual(g.edges[(1,2)], 1.5, "edge not suppose to change when adding already existing edge")
         g.remove_node(3)
@@ -146,7 +172,7 @@ class TestDiGraph(unittest.TestCase):
         self.assertTrue(1 in g.nodes)
         self.assertEqual(g.nodes[2].id, 2, "didn't get the right node")
         # not added already exist node
-        self.assertFalse(g.add_node(1, (3, 7)), "didn't return false when added already exist node")
+        self.assertFalse(g.add_node(1, (3, 7,0)), "didn't return false when added already exist node")
         self.assertEqual(g.nodes[1].pos, (2, 5), "added already exist node")
 
     def test_remove_node(self):

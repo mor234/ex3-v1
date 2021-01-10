@@ -62,13 +62,15 @@ def compare_correct_shortest(our_graph: GraphAlgo, nx_graph: nx.DiGraph, src: in
         else:
             return False
 
+    ans = False
+    print("len", nx_length)
     if np.math.isclose(our_ans[0], nx_length):  # compare the length results
-        print("length is the same: ", nx_length)
-        print (nx_path, "our:",our_ans[1],"java:", java_ans)
-        if nx_path == our_ans[1] == java_ans:
+        if np.math.isclose(our_ans[0], java_ans):
+            print("length is the same: ", nx_length)
+            ans = True  # if length is the same- it's the same. path could be different with the same length
+        if nx_path == our_ans[1]:
             print("path is the same: ", nx_path)
-            return True
-    return False
+    return ans
 
 
 def time_our_shortest(our_graph: GraphAlgo, nx_graph: nx.DiGraph, src: int, dest: int):
@@ -112,17 +114,20 @@ def check_same_ans_and_run_time(file_name: str, list, java_ans1, java_ans2):
     nx_graph = convert_our_graph_to_networkx_graph(our_graph_algo.get_graph())
     point = list[0]
     if compare_correct_shortest(our_graph_algo, nx_graph, point[0], point[1], java_ans1):
-        print(time_our_shortest(our_graph_algo, nx_graph, point[0], point[1]))
+        pass
     else:
         print("Error. did not return the same results")
+    print(time_our_shortest(our_graph_algo, nx_graph, point[0], point[1]))
+
     point = list[1]
     if compare_correct_shortest(our_graph_algo, nx_graph, point[0], point[1], java_ans2):
-        print(time_our_shortest(our_graph_algo, nx_graph, point[0], point[1]))
+        pass
     else:
         print("Error. did not return the same results")
+    print(time_our_shortest(our_graph_algo, nx_graph, point[0], point[1]))
 
 
-def comp_run_time(file_name, key_comp_1, key_comp_2=None):
+def comp_run_time(file_name, all_comp_java, key_comp_1, comp1_java, key_comp_2=None, comp2_java=None):
     """
     The method load graph from json file, and calculate all strongly connected component in the graph, measure the
     time it takes and print the list of the connected components and the time.
@@ -141,13 +146,15 @@ def comp_run_time(file_name, key_comp_1, key_comp_2=None):
     end = time.time()
     our_time = end - start
     print("all_comp:", all_comp)
+    print("the same as java: " + str(all_comp == all_comp_java))
     print("all_comp time:", our_time)
 
     start = time.time()
     this_comp = graph_algo.connected_component(key_comp_1)
     end = time.time()
     comp1_time = end - start
-    print("first comp:", this_comp)
+    # print("first comp:", this_comp)
+    print("the same as java: " + str(this_comp == comp1_java))
     print("first comp time:", comp1_time)
 
     if key_comp_2 is not None:
@@ -155,7 +162,8 @@ def comp_run_time(file_name, key_comp_1, key_comp_2=None):
         this_comp = graph_algo.connected_component(key_comp_2)
         end = time.time()
         comp2_time = end - start
-        print("second comp:", this_comp)
+        # print("second comp:", this_comp)
+        print("the same as java: " + str(this_comp == comp2_java))
         print("second comp time:", comp2_time)
 
 
@@ -181,42 +189,44 @@ def shortest_check():
     print("graph G_10000_80000_1")
     check_same_ans_and_run_time("../Graphs_on_circle/G_10000_80000_1.json", [(9, 8030), (151, 9087)],
                                 j_res.graph_G_10000_80000_1_path_9_8030, j_res.graph_G_10000_80000_1_path_151_9087)
-    #
-    # print("graph G_20000_160000_1")
-    # check_same_ans_and_run_time("../Graphs_on_circle/G_20000_160000_1.json", [(9, 18030), (151, 19087)],
-    #                             j_res.graph_G_20000_160000_1_path_9_18030, j_res.graph_G_20000_160000_1_path_151_19087)
-    #
-    # print("graph G_30000_240000_1")
-    # check_same_ans_and_run_time("../Graphs_on_circle/G_30000_240000_1.json", [(1000, 22030), (151, 29087)],
-    #                             j_res.graph_G_30000_240000_1_path_1000_22030,
-    #                             j_res.graph_G_30000_240000_1_path_151_29087)
-    #
+
+    print("graph G_20000_160000_1")
+    check_same_ans_and_run_time("../Graphs_on_circle/G_20000_160000_1.json", [(9, 18030), (151, 19087)],
+                                j_res.graph_G_20000_160000_1_path_9_18030, j_res.graph_G_20000_160000_1_path_151_19087)
+
+    print("graph G_30000_240000_1")
+    check_same_ans_and_run_time("../Graphs_on_circle/G_30000_240000_1.json", [(1000, 22030), (151, 29087)],
+                                j_res.graph_G_30000_240000_1_path_1000_22030,
+                                j_res.graph_G_30000_240000_1_path_151_29087)
+
 
 def strongly_comp_check():
     """
     this method call for each graph a function that measure performance of connected_components() algorithm
-    in this implementation ,performance measured in run time.
+    in this implementation ,performance measured in run time. also check if the result is the same as the given java result
      :return:
     """
 
-    print("graph G_10_80_1")
-    comp_run_time("../Graphs_on_circle/G_10_80_1.json", 0)
-    #,j_res.graph_G_10_80_1_all_comp,j_res.g)
-
-    print("graph G_100_800_1")
-    comp_run_time("../Graphs_on_circle/G_100_800_1.json", 0)
-
-    print("graph G_1000_8000_1")
-    comp_run_time("../Graphs_on_circle/G_1000_8000_1.json", 0)
-
+    # print("graph G_10_80_1")
+    # comp_run_time("../Graphs_on_circle/G_10_80_1.json",j_res.graph_G_10_80_1_all_comp, 0,j_res.graph_G_10_80_1_comp1)
+    #
+    # print("graph G_100_800_1")
+    # comp_run_time("../Graphs_on_circle/G_100_800_1.json",j_res.graph_G_100_800_1_all_comp, 0,j_res.graph_G_100_800_1_comp1)
+    #
+    # print("graph G_1000_8000_1")
+    # comp_run_time("../Graphs_on_circle/G_1000_8000_1.json", j_res.graph_G_1000_8000_1_all_comp,0,j_res.graph_G_1000_8000_1_comp1)
+    #
     print("graph G_10000_80000_1")
-    comp_run_time("../Graphs_on_circle/G_10000_80000_1.json", 0, 238)
+    comp_run_time("../Graphs_on_circle/G_10000_80000_1.json", j_res.graph_G_10000_80000_1_all_comp, 0, j_res.graph_G_10000_80000_1_comp1)
+    #              , j_res.graph_G_10000_80000_1_comp1, 2891, j_res.graph_G_10000_80000_1_comp2)
 
     print("graph G_20000_160000_1")
-    comp_run_time("../Graphs_on_circle/G_20000_160000_1.json", 1209)
+    comp_run_time("../Graphs_on_circle/G_20000_160000_1.json", j_res.graph_G_20000_160000_1_all_comp, 0,
+                  j_res.graph_G_20000_160000_1_comp1, 1830, j_res.graph_G_20000_160000_1_comp2)
 
     print("graph G_30000_240000_1")
-    comp_run_time("../Graphs_on_circle/G_30000_240000_1.json", 0, 238)
+    comp_run_time("../Graphs_on_circle/G_30000_240000_1.json", j_res.graph_G_30000_240000_1_all_comp, 0,
+                  j_res.graph_G_30000_240000_1_comp1, 5088, j_res.graph_G_30000_240000_1_comp2)
 
 
 if __name__ == '__main__':
@@ -225,5 +235,5 @@ if __name__ == '__main__':
     Also, calculate and print run time of the algorithm connected component on several graphs ,
     compare the results to results from running this algorithm in java, 
     """
-    shortest_check()
-    # strongly_comp_check()
+    # shortest_check()
+    strongly_comp_check()

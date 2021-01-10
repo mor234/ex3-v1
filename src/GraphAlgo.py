@@ -62,6 +62,8 @@ class GraphAlgo(GraphAlgoInterface):
         if self.graph is not None:
             for node in self.graph.nodes.values():
                 single_node_dict = copy.deepcopy(node.__dict__)
+                del single_node_dict["out_edge_nodes"]
+                del single_node_dict["in_edge_nodes"]
                 del single_node_dict["visited"]
                 del single_node_dict["is_part_of_scc"]
                 del single_node_dict["tag"]
