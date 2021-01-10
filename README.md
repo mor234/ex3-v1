@@ -7,8 +7,9 @@ In the project we presents an implementation of a directed weighted graph with d
 the src contains different classes which represents the directional weighted graph and the methods you can do on it.  There are three classes  in our project : the DiGraph and GraphAlgo and NodeData . 
 
 ## how to use:
-write in the terminal: 
-git clone 
+write in the terminal:
+
+>git clone https://github.com/mor234/ex3-v1.git 
 and run any test you want. 
 
 ## the classes we use for this program:
