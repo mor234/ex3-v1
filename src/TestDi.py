@@ -5,8 +5,6 @@ from DiGraph import DiGraph
 
 class TestDiGraph(unittest.TestCase):
 
-    def test_init_(self):
-        pass
 
     def test_v_size(self):
         """
@@ -76,13 +74,53 @@ class TestDiGraph(unittest.TestCase):
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
         """
+        g = DiGraph()
+        g.add_node(1)
+        g.add_node(2)
+        g.add_node(3)
+        g.add_node(4)
+        g.add_edge(1,4,14)
+        g.add_edge(1,2,12)
+        g.add_edge(2,1,21)
+        g.add_edge(1,3,13)
+        g.add_edge(2,3,23)
+        g.add_edge(3,1,31)
+        print(g.all_out_edges_of_node(1))
+       # self.assertEqual(g.all_out_edges_of_node(1),{"2":(2,12)})
+
+
+
+
 
     def test_get_mc(self):
         """
-        Returns the current version of this graph,
-        on every change in the graph state - the MC should be increased
-        @return: The current version of this graph.
+        check mc change and not change correctly
         """
+        g = DiGraph()
+        mc_start = g.get_mc()
+        g.add_node(1)
+        g.add_node(2)
+        g.add_node(3)
+        mc_after_add_node = g.get_mc()
+        self.assertTrue(mc_start + 3 <= mc_after_add_node, "not update mc correctly after add")
+        g.add_node(3)
+        self.assertEqual(g.get_mc(), mc_after_add_node, "mc not suppose to change when adding already existing node")
+        g.add_edge(1,2,1.5)
+        mc_after_add_edge = g.get_mc()
+        self.assertTrue(mc_after_add_node< mc_after_add_edge, "not update mc correctly after add")
+        g.add_edge(1,2,7)
+        self.assertEqual(g.get_mc(), mc_after_add_edge, "mc not suppose to change when adding already existing edge")
+        self.assertEqual(g.edges[(1,2)], 1.5, "edge not suppose to change when adding already existing edge")
+        g.remove_node(3)
+        mc_rm_node=g.get_mc()
+        self.assertTrue( mc_after_add_edge<mc_rm_node, "not update mc correctly after rmove edge")
+        g.remove_edge(1,2)
+        mc_rm_edge =g.get_mc()
+        self.assertTrue(mc_rm_node<mc_rm_edge, "not update mc correctly after rmove edge")
+        g.all_out_edges_of_node(1)
+        g.v_size()
+        g.get_all_v()
+        self.assertEqual(mc_rm_edge,g.get_mc(),"mc not suppose to change after get functions")
 
     def test_add_edge(self):
         g = DiGraph()
@@ -112,13 +150,7 @@ class TestDiGraph(unittest.TestCase):
         self.assertEqual(g.nodes[1].pos, (2, 5), "added already exist node")
 
     def test_remove_node(self):
-        """
-        Removes a node from the graph.
-        @param node_id: The node ID
-        @return: True if the node was removed successfully, False o.w.
 
-        Note: if the node id does not exists the function will do nothing
-        """
         g = DiGraph()
 
         g.add_node(0);
@@ -137,14 +169,22 @@ class TestDiGraph(unittest.TestCase):
         self.assertTrue(mc + 4 <= g.get_mc(), "didn't update mc correctly");
 
     def test_remove_edge(self):
-        """
-        Removes an edge from the graph.
-        @param node_id1: The start node of the edge
-        @param node_id2: The end node of the edge
-        @return: True if the edge was removed successfully, False o.w.
 
-        Note: If such an edge does not exists the function will do nothing
-        """
+        g = DiGraph()
+
+        g.add_node(0);
+        g.add_node(1);
+        g.add_node(2);
+
+        g.add_edge(1, 2, 1.5);
+        g.add_edge(2, 1, 3);
+        g.add_edge(1, 3, 6);
+
+        mc = g.get_mc()
+        self.assertTrue(g.remove_edge(1, 2))
+        self.assertFalse((1, 2) in g.edges, "didn't delete edge ");
+        self.assertFalse((0, 1) in g.edges, "didn't return false for not existing edge.");
+        self.assertTrue(mc + 1 <= g.get_mc(), "didn't update mc correctly");
 
     if __name__ == '__main__':
         unittest.main()

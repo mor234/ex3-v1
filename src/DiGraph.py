@@ -4,6 +4,9 @@ from src.NodeData import NodeData
 
 class DiGraph(GraphInterface):
     def __init__(self):
+        """
+        constructor
+        """
         self.nodes = {}
         self.edges = {}
         self.mc = 0
@@ -32,25 +35,14 @@ class DiGraph(GraphInterface):
         """return a dictionary of all the nodes connected to (into) node_id ,
         each node is represented using a pair (other_node_id, weight)
         """
-        in_edges_of_node = {}
-        for key, weight in self.edges.items():  # need to check
-            if id1 in key:
-                if key.index(id1) == 1:
-                    in_edges_of_node[key[0]] = weight
-
-        return in_edges_of_node
+        return self.nodes[id1].in_edge_nodes
 
     def all_out_edges_of_node(self, id1: int) -> dict:
         """return a dictionary of all the nodes connected from node_id , each node is represented using a pair
         (other_node_id, weight)
+        assumes id1 is in the graph
         """
-        out_edges_of_node = {}
-        for key, weight in self.edges.items():  # need to check
-            if id1 in key:
-                if key.index(id1) == 0:
-                    out_edges_of_node[key[1]] = weight
-
-        return out_edges_of_node
+        return self.nodes[id1].out_edge_nodes
 
     def get_mc(self) -> int:
         """
@@ -77,8 +69,11 @@ class DiGraph(GraphInterface):
             if (id1, id2) in self.edges:
                 return False
             else:
-                self.mc += 1
-                self.edges[(id1, id2)] = weight
+                self.mc += 1  # update mc
+                self.edges[(id1, id2)] = weight  # add to list of edges in the graph
+                self.nodes[id1].out_edge_nodes[id2] = weight  # add the edge to dict in src node
+                self.nodes[id2].in_edge_nodes[id1] = weight  # add the edge to dict in dest node
+
                 return True
         else:
             return False
@@ -96,7 +91,7 @@ class DiGraph(GraphInterface):
             return False
         else:
             self.nodes[node_id] = NodeData(node_id, pos)
-            self.mc += 1
+            self.mc += 1  # update mc
             return True
 
     def remove_node(self, node_id: int) -> bool:
@@ -129,9 +124,15 @@ class DiGraph(GraphInterface):
         """
         if (node_id1, node_id2) in self.edges:
             self.mc += 1
-            del self.edges[(node_id1, node_id2)]
+            del self.edges[(node_id1, node_id2)]  # delete from list of edges in the graph
+            del self.nodes[node_id1].out_edge_nodes[node_id2]  # delete the edge from dict in src node
+            del self.nodes[node_id2].in_edge_nodes[node_id1]  # delete the edge from dict in dest node
+
             return True
         return False  # if the edge doesn't exist
 
+    def __repr__(self):
+        ans = "Graph: | V |= " + str(self.v_size()) + ", | E |= " + str(self.e_size())
+        return ans
 
 
