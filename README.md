@@ -62,7 +62,6 @@ returning the shortest path distance between two nodes in the graph and a list o
 | Graph  | Time for path 1 | Time for path 2 | Time for finding all strongly connected component  | Time for finding comp1 |  Time for finding comp2 |
 | -----  | --------------- | --------------- | -------------------------------------------------  | ---------------------- |  ---------------------- |
 
-| ------- | ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- | ----- | ------- | -------- |
 |         |      |         |          |       |         |          |       |         |          |       |         |          |       |         |           |
 |         | Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |  Java | Paython | Networkx |
 | ------- | ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- |  ---- | ------- | -------- | ----- | ------- | -------- |
