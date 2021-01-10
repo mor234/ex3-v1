@@ -6,6 +6,11 @@ this project created for an assignment for object orientep programming course in
 In the project we presents an implementation of a directed weighted graph with different methods and algorithms using by Python.
 the src contains different classes which represents the directional weighted graph and the methods you can do on it.  There are three classes  in our project : the DiGraph and GraphAlgo and NodeData . 
 
+## how to use:
+write in the terminal: 
+git clone 
+and run any test you want. 
+
 ## the classes we use for this program:
 
 ## NodeData
