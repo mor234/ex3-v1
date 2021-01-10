@@ -49,7 +49,7 @@ The class represents algorithms of a DiGraph class. In this class we can find th
 ## The compare of our graphs:
 in this comparison we take a several graphs and test which algorithm has better running time for same functions. we use in Java alghoritms from ex2 program and from our python algorithms and  NetworkX algorithms.
 
-## the function that we comparig :
+## the function that we are comparing :
 
 ### connected component: 
 we only compare this function only between Java algotihms and Python algotihms because NetworkX doesn't use it.
