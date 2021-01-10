@@ -9,7 +9,8 @@ the src contains different classes which represents the directional weighted gra
 ## how to use:
 write in the terminal:
 
->git clone https://github.com/mor234/ex3-v1.git 
+>git clone https://github.com/mor234/ex3-v1.git   
+
 and run any test you want. 
 
 ## the classes we use for this program:
