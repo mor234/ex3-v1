@@ -126,7 +126,7 @@ class GraphAlgo(GraphAlgoInterface):
         More info:
         https://en.wikipedia.org/wiki/Dijkstra's_algorithm
         """
-
+        print("a")
         ans_dist = float('inf')
         ans_path = []
         if self.graph is None:
@@ -166,6 +166,7 @@ class GraphAlgo(GraphAlgoInterface):
             distance_queue.sort(reverse=True)
 
         # end of loop
+        print("b")
         # if there is no path to id2 from id1
         if ans_dist == float("inf"):
             return ans_dist, ans_path
@@ -181,7 +182,7 @@ class GraphAlgo(GraphAlgoInterface):
                     curr_node = node
                     break
             ans_path.insert(0, curr_node.id)# add the node to the start of the list
-
+        print("c")
         return ans_dist, ans_path
 
     def connected_component(self, id1: int) -> list:

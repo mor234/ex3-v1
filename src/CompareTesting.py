@@ -6,6 +6,7 @@ import numpy as np
 
 from src.DiGraph import DiGraph
 from src.GraphAlgo import GraphAlgo
+from src.AnsFromJava import AnsFromJava as j_ans
 
 
 def comp_run_time(file_name, key_comp_1, key_comp_2=None):
@@ -94,35 +95,35 @@ def check_same_ans_and_run_time(file_name: str, list):
 
 
 def shortest_check():
-    print("garph G_10_80_0")
-    check_same_ans_and_run_time("../Graphs_no_pos/G_10_80_0.json", [(4, 2), (1, 9)])
+    # print("garph G_10_80_0")
+    # check_same_ans_and_run_time("../Graphs_no_pos/G_10_80_0.json", [(4, 2), (1, 9)],j_ans.graph_G_10_80_0_path_4_2,j_ans.graph_G_10_80_0_path_1_9)
+    #
+    # print("garph G_100_800_0")
+    # check_same_ans_and_run_time("../Graphs_no_pos/G_100_800_0.json", [(1, 72), (98, 75)],j_ans.graph_G_100_800_0_path_1_72,j_ans.graph_G_100_800_0_path_98_75)
 
-    print("garph G_100_800_0")
-    check_same_ans_and_run_time("../Graphs_no_pos/G_100_800_0.json", [(1, 72), (98, 75)])
-
-    print("garph G_1000_8000_0")
-    check_same_ans_and_run_time("../Graphs_no_pos/G_1000_8000_0.json", [(10, 1000), (19, 631)])
-
-    print("garph G_10000_80000_0")
-    check_same_ans_and_run_time("../Graphs_no_pos/G_10000_80000_0.json", [(9, 8030), (151, 9087)])
-
-    print("garph G_20000_160000_0")
-    check_same_ans_and_run_time("../Graphs_no_pos/G_20000_160000_0.json", [(9, 18030), (151, 19087)])
+    # print("garph G_1000_8000_0")
+    # check_same_ans_and_run_time("../Graphs_no_pos/G_1000_8000_0.json", [(10, 1000), (19, 631)])
+    #
+    # print("garph G_10000_80000_0")
+    # check_same_ans_and_run_time("../Graphs_no_pos/G_10000_80000_0.json", [(9, 8030), (151, 9087)])
+    #
+    # print("garph G_20000_160000_0")
+    # check_same_ans_and_run_time("../Graphs_no_pos/G_20000_160000_0.json", [(9, 18030), (151, 19087)])
 
     print("graph G_30000_240000_0")
-    # (1, 100000), (43, 120000), (1001, 20000)
-    check_same_ans_and_run_time("../Graphs_no_pos/G_30000_240000_0.json", [(17000, 29000)])
+
+    check_same_ans_and_run_time("../Graphs_no_pos/G_30000_240000_0.json", [(1000, 22030),(151,29087)])
 
 
 def strongly_comp_check():
-    # print("graph G_10_80_0")
-    # comp_run_time("../Graphs_no_pos/G_10_80_0.json", 0)
-    #
-    # print("graph G_100_800_0")
-    # comp_run_time("../Graphs_no_pos/G_100_800_0.json", 0)
-    #
-    # print("graph G_1000_8000_0")
-    # comp_run_time("../Graphs_no_pos/G_1000_8000_0.json", 0)
+    print("graph G_10_80_0")
+    comp_run_time("../Graphs_no_pos/G_10_80_0.json", 0)
+
+    print("graph G_100_800_0")
+    comp_run_time("../Graphs_no_pos/G_100_800_0.json", 0)
+
+    print("graph G_1000_8000_0")
+    comp_run_time("../Graphs_no_pos/G_1000_8000_0.json", 0)
 
     print("graph G_10000_80000_0")
     comp_run_time("../Graphs_no_pos/G_10000_80000_0.json", 0, 238)
@@ -136,5 +137,5 @@ def strongly_comp_check():
 
 
 if __name__ == '__main__':
-    # shortest_check()
-    strongly_comp_check()
+    shortest_check()
+    # strongly_comp_check()

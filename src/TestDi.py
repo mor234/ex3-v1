@@ -1,4 +1,5 @@
 import unittest
+
 from DiGraph import DiGraph
 
 
