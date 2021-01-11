@@ -37,8 +37,7 @@ class TestGraphAlgo(unittest.TestCase):
         self.assertTrue(ga1.save_to_json("../data/try1"))
         ga2 = GraphAlgo()
         self.assertTrue(ga2.load_from_json("../data/try1"))
-        self.assertTrue(ga2.get_graph().v_size()>0)
-
+        self.assertTrue(ga2.get_graph().v_size() > 0)
 
     def test_shortest_path(self):
         """
@@ -74,8 +73,8 @@ class TestGraphAlgo(unittest.TestCase):
         g.add_edge(1, 2, 4)
 
         g_algo = GraphAlgo(g)
-        self.assertEqual( g_algo.shortest_path(0, 1),(1, [0, 1]))
-        self.assertEqual( g_algo.shortest_path(0, 2),(5, [0, 1, 2]))
+        self.assertEqual(g_algo.shortest_path(0, 1), (1, [0, 1]))
+        self.assertEqual(g_algo.shortest_path(0, 2), (5, [0, 1, 2]))
 
         path_check_graph = DiGraph()
         for i in range(7):
@@ -94,35 +93,29 @@ class TestGraphAlgo(unittest.TestCase):
         path_check_graph.add_edge(4, 5, 5)
 
         path_check_graph.add_edge(5, 6, 4)
-        g_algo.graph=path_check_graph
+        g_algo.graph = path_check_graph
 
-        len,path= g_algo.shortest_path(1, 6);
+        len, path = g_algo.shortest_path(1, 6);
 
-
-        self.assertEqual(path,[1,2,3,5,6], "didn't give the correct path")
+        self.assertEqual(path, [1, 2, 3, 5, 6], "didn't give the correct path")
         self.assertEqual(len, 10)
 
-
-    def test_connected_component_s(self):
+    def test_connected_component_s1(self):
         """
-        Finds the Strongly Connected Component(SCC) that node id1 is a part of.
-        @param id1: The node id
-        @return: The list of nodes in the SCC
-
-        Notes:
-        If the graph is None or id1 is not in the graph, the function should return an empty list []
+        test methods that finds the Strongly Connected Component(SCC) that node id1 is a part of.
+        and methods that finds all strongly connected Components in a graph.
         """
         ga = GraphAlgo()
         g = DiGraph()
-        g.add_node(1, (1, 7));
-        g.add_node(2, (2, 7));
-        g.add_node(3, (0, 7));
+        g.add_node(1)
+        g.add_node(2)
+        g.add_node(3)
 
         g.add_edge(1, 2, 1.5)
-        g.add_edge(2, 1, 3);
-        g.add_edge(1, 3, 6);
+        g.add_edge(2, 1, 3)
+        g.add_edge(1, 3, 6)
         ga.graph = g
-        self.assertEqual(ga.connected_component(1),[1,2])
+        self.assertEqual(ga.connected_component(1), [1, 2])
 
         g = DiGraph()
         g.add_node(1)
@@ -141,11 +134,54 @@ class TestGraphAlgo(unittest.TestCase):
 
         ga.graph = g
 
-        self.assertEqual(ga.connected_component(1),[1])
-        self.assertEqual(ga.connected_component(6),[4,5,6])
-        self.assertEqual(ga.connected_components(),[[1],[2],[3],[4,5,6]])
+        self.assertEqual(ga.connected_component(1), [1])
+        self.assertEqual(ga.connected_component(6), [4, 5, 6])
+        self.assertEqual(ga.connected_components(), [[1], [2], [3], [4, 5, 6]])
 
+    def test_connected_component_s2(self):
+        """
+        test methods that finds the Strongly Connected Component(SCC) that node id1 is a part of.
+        and methods that finds all strongly connected Components in a graph.
+        """
+        ga = GraphAlgo()
+        g = DiGraph()
+        g.add_node(1)
+        g.add_node(2)
+        g.add_node(3)
+        g.add_node(4)
+        g.add_node(5)
+        g.add_node(6)
+        g.add_node(7)
+        g.add_node(8)
+        g.add_node(9)
+        g.add_node(10)
+        g.add_node(11)
+        g.add_node(12)
 
+        g.add_edge(2, 5, 1.5)
+        g.add_edge(3, 12, 3)
+        g.add_edge(4, 6, 6)
+        g.add_edge(5, 7, 1.5)
+        g.add_edge(5, 11, 3)
+        g.add_edge(5, 8, 3)
+
+        g.add_edge(6, 3, 6)
+        g.add_edge(7, 11, 1.5)
+        g.add_edge(7, 10, 3)
+        g.add_edge(8, 9, 6)
+        g.add_edge(9, 2, 1.5)
+        g.add_edge(11, 12, 3)
+        g.add_edge(11, 5, 3)
+
+        g.add_edge(12, 4, 6)
+        g.add_edge(12, 6, 6)
+
+        ga.graph = g
+        self.assertEqual(ga.connected_components(), [[1], [2, 5, 7, 8, 9, 11], [3, 4, 12, 6], [10]])
+
+        self.assertEqual(ga.connected_component(7), [2, 5, 7, 8, 9, 11])
+        self.assertEqual(ga.connected_component(1), [1])
+        self.assertEqual(ga.connected_component(10), [10])
 
 
 if __name__ == '__main__':
