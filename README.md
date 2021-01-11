@@ -1,4 +1,4 @@
-# Directed Weighted Graph
+# Directed Weighted Graph in python
 ![weight01](https://user-images.githubusercontent.com/74146562/104093717-f4c32800-5294-11eb-866b-8a922a9afa9d.gif)
 
 ## about our project:
