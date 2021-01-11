@@ -164,21 +164,21 @@ def shortest_check():
 
      :return:
     """
-    print("graph G_10_80_1")
-    check_same_ans_and_run_time("../Graphs_on_circle/G_10_80_1.json", [(4, 2), (1, 9)],
-                                j_res.graph_G_10_80_1_path_4_2, j_res.graph_G_10_80_1_path_1_9)
-
-    print("graph G_100_800_1")
-    check_same_ans_and_run_time("../Graphs_on_circle/G_100_800_1.json", [(1, 72), (98, 75)],
-                                j_res.graph_G_100_800_1_path_1_72, j_res.graph_G_100_800_1_path_98_75)
+    # print("graph G_10_80_1")
+    # check_same_ans_and_run_time("../Graphs_on_circle/G_10_80_1.json", [(4, 2), (1, 9)],
+    #                             j_res.graph_G_10_80_1_path_4_2, j_res.graph_G_10_80_1_path_1_9)
     #
-    print("graph G_1000_8000_1")
-    check_same_ans_and_run_time("../Graphs_on_circle/G_1000_8000_1.json", [(10, 999), (19, 631)],
-                                j_res.graph_G_1000_8000_1_path_10_999, j_res.graph_G_1000_8000_1_path_19_631)
-
-    print("graph G_10000_80000_1")
-    check_same_ans_and_run_time("../Graphs_on_circle/G_10000_80000_1.json", [(9, 8030), (151, 9087)],
-                                j_res.graph_G_10000_80000_1_path_9_8030, j_res.graph_G_10000_80000_1_path_151_9087)
+    # print("graph G_100_800_1")
+    # check_same_ans_and_run_time("../Graphs_on_circle/G_100_800_1.json", [(1, 72), (98, 75)],
+    #                             j_res.graph_G_100_800_1_path_1_72, j_res.graph_G_100_800_1_path_98_75)
+    # #
+    # print("graph G_1000_8000_1")
+    # check_same_ans_and_run_time("../Graphs_on_circle/G_1000_8000_1.json", [(10, 999), (19, 631)],
+    #                             j_res.graph_G_1000_8000_1_path_10_999, j_res.graph_G_1000_8000_1_path_19_631)
+    #
+    # print("graph G_10000_80000_1")
+    # check_same_ans_and_run_time("../Graphs_on_circle/G_10000_80000_1.json", [(9, 8030), (151, 9087)],
+    #                             j_res.graph_G_10000_80000_1_path_9_8030, j_res.graph_G_10000_80000_1_path_151_9087)
 
     print("graph G_20000_160000_1")
     check_same_ans_and_run_time("../Graphs_on_circle/G_20000_160000_1.json", [(9, 18030), (151, 19087)],
@@ -197,21 +197,21 @@ def strongly_comp_check():
      :return:
     """
 
-    print("graph G_10_80_1")
-    comp_run_time("../Graphs_on_circle/G_10_80_1.json",j_res.graph_G_10_80_1_all_comp, 0,j_res.graph_G_10_80_1_comp1)
-
-    print("graph G_100_800_1")
-    comp_run_time("../Graphs_on_circle/G_100_800_1.json",j_res.graph_G_100_800_1_all_comp, 0,j_res.graph_G_100_800_1_comp1)
-
-    print("graph G_1000_8000_1")
-    comp_run_time("../Graphs_on_circle/G_1000_8000_1.json", j_res.graph_G_1000_8000_1_all_comp,0,j_res.graph_G_1000_8000_1_comp1)
-
-    print("graph G_10000_80000_1")
-    comp_run_time("../Graphs_on_circle/G_10000_80000_1.json", j_res.graph_G_10000_80000_1_all_comp, 0, j_res.graph_G_10000_80000_1_comp1)
-
-    print("graph G_20000_160000_1")
-    comp_run_time("../Graphs_on_circle/G_20000_160000_1.json", j_res.graph_G_20000_160000_1_all_comp, 0,
-                  j_res.graph_G_20000_160000_1_comp1)
+    # print("graph G_10_80_1")
+    # comp_run_time("../Graphs_on_circle/G_10_80_1.json",j_res.graph_G_10_80_1_all_comp, 0,j_res.graph_G_10_80_1_comp1)
+    #
+    # print("graph G_100_800_1")
+    # comp_run_time("../Graphs_on_circle/G_100_800_1.json",j_res.graph_G_100_800_1_all_comp, 0,j_res.graph_G_100_800_1_comp1)
+    #
+    # print("graph G_1000_8000_1")
+    # comp_run_time("../Graphs_on_circle/G_1000_8000_1.json", j_res.graph_G_1000_8000_1_all_comp,0,j_res.graph_G_1000_8000_1_comp1)
+    #
+    # print("graph G_10000_80000_1")
+    # comp_run_time("../Graphs_on_circle/G_10000_80000_1.json", j_res.graph_G_10000_80000_1_all_comp, 0, j_res.graph_G_10000_80000_1_comp1)
+    #
+    # print("graph G_20000_160000_1")
+    # comp_run_time("../Graphs_on_circle/G_20000_160000_1.json", j_res.graph_G_20000_160000_1_all_comp, 0,
+    #               j_res.graph_G_20000_160000_1_comp1)
 
     print("graph G_30000_240000_1")
     comp_run_time("../Graphs_on_circle/G_30000_240000_1.json", j_res.graph_G_30000_240000_1_all_comp, 0,
@@ -224,5 +224,5 @@ if __name__ == '__main__':
     Also, calculate and print run time of the algorithm connected component on several graphs ,
     compare the results to results from running this algorithm in java, 
     """
-    shortest_check()
+    # shortest_check()
     strongly_comp_check()
