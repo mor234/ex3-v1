@@ -2,7 +2,6 @@ import time
 
 import networkx as nx
 import numpy as np
-from networkx import shortest_path
 
 from src.DiGraph import DiGraph
 from src.GraphAlgo import GraphAlgo
@@ -57,7 +56,7 @@ def time_our_shortest_compare(our_graph: GraphAlgo, nx_graph: nx.DiGraph, src: i
     nx_length=-1;
     try:
         start = time.time()
-        nx_path = shortest_path(nx_graph, source=src, target=dest, weight='weight', method='dijkstra')
+        nx_path = nx.shortest_path(nx_graph, source=src, target=dest, weight='weight', method='dijkstra')
         end = time.time()
         nx_length = nx.shortest_path_length(nx_graph, source=src, target=dest, weight='weight', method='dijkstra')
 
