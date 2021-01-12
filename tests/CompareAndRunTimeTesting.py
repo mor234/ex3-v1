@@ -47,7 +47,7 @@ def time_our_shortest_compare(our_graph: GraphAlgo, nx_graph: nx.DiGraph, src: i
     :param nx_graph:  graph Type netwarkx.DiGraph
     :param src: key of source node of the path
     :param dest: key of destination node of the path
-    :return: the time it took to calculate in each implementation
+    :return:
     """
     start = time.time()
     our_ans = our_graph.shortest_path(src, dest)
@@ -65,7 +65,7 @@ def time_our_shortest_compare(our_graph: GraphAlgo, nx_graph: nx.DiGraph, src: i
         print(e)
         end = time.time()
         # if the exception was caused dou to the fact their is no path between src and dest,
-        # and return result which also means it
+        # and keep result which also means it
         if our_ans == (float('inf'), []):
             is_same_ans = True
 
