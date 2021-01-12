@@ -116,6 +116,7 @@ class TestGraphAlgo(unittest.TestCase):
         g.add_edge(1, 3, 6)
         ga.graph = g
         self.assertEqual(ga.connected_component(1), [1, 2])
+        ga.save_to_json("..\data\comp.json")
 
         g = DiGraph()
         g.add_node(1)
@@ -178,6 +179,8 @@ class TestGraphAlgo(unittest.TestCase):
 
         ga.graph = g
         self.assertEqual(ga.connected_components(), [[1], [2, 5, 7, 8, 9, 11], [3, 4, 12, 6], [10]])
+        ga.save_to_json("..\data\comp2.json")
+
 
         self.assertEqual(ga.connected_component(7), [2, 5, 7, 8, 9, 11])
         self.assertEqual(ga.connected_component(1), [1])

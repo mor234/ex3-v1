@@ -244,7 +244,7 @@ class GraphAlgo(GraphAlgoInterface):
             if flag_visited_all_nei:
                 nodes_from.append(curr_node.id)  # add to the list of reachable nodes
                 curr_node.visited = True
-                if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                if curr_node.id == id1:  # if all the neighbors of id1 are visited
                     break
                 curr_node = self.graph.nodes[curr_node.tag]  # go back to the node it came from
                 neighbors_list = self.graph.all_out_edges_of_node(curr_node.id)  # update the neighbors_list
@@ -287,7 +287,7 @@ class GraphAlgo(GraphAlgoInterface):
             if flag_visited_all_nei:
                 nodes_to.append(curr_node.id)  # add to the list of reachable nodes
                 curr_node.visited = True
-                if curr_node.id is id1:  # if all the neighbors of id1 are visited
+                if curr_node.id == id1:  # if all the neighbors of id1 are visited
                     break
                 curr_node = self.graph.nodes[curr_node.tag]  # go back
                 neighbors_list = self.graph.all_in_edges_of_node(curr_node.id)
