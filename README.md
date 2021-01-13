@@ -11,7 +11,7 @@ write in the terminal:
 
 >git clone https://github.com/mor234/ex3-v1.git   
 
-and run any test you want. 
+install any library you are missing, and run any test you want. 
 
 ## the classes we use for this program:
 
