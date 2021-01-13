@@ -385,8 +385,10 @@ class GraphAlgo(GraphAlgoInterface):
                          color="lime")
 
         # paint the nodes
-        plt.scatter(x_nodes, y_nodes, label="vertx", color='red', s=100)
+        plt.scatter(x_nodes, y_nodes, label="vertx", color='red', s=100,
+                    edgecolors='green', linewidths = 1)
 
         # Showing the graph
+        plt.tight_layout()
         plt.legend()
         plt.show()
